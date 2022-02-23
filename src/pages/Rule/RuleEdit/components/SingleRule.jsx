@@ -2,119 +2,119 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Select, Input, Form, Spin, Card, Col, Popover, Row, message, Button } from 'antd';
 import { useState, useEffect } from 'react';
 
-const SingleRule = ({variables, operators, ruleCondition, showMinus, onChange, onDelete}) => {
-
+const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, onDelete }) => {
   const ruleCond = ruleCondition;
 
   const triggerChange = (changedValue) => {
     onChange?.({
       ...changedValue,
-      } );
-  };
-  
-  //////  variables //////
-  const onVariableChange = (newVariable) =>{
-    triggerChange({...ruleCond, leftId: newVariable});
+    });
   };
 
+  //////  variables //////
   const variableOptions = [];
+  let defaultVaraible = {};
+  //{code:element}
   const variableOptionsMap = new Map();
-  variables.forEach((value, key) => {
-    var opt  = {label:value, value:key};
+  variables.forEach((ele) => {
+    var opt = { label: ele.name, value: ele.code };
     variableOptions.push(opt);
-    variableOptionsMap.set(key, opt);
+    variableOptionsMap.set(ele.code, ele);
+    if (ele.id == ruleCond.leftId) {
+      defaultVaraible = { label: ele.name, value: ele.code };
+    }
   });
 
-  const defaultVaraible = variableOptionsMap.get(ruleCond.leftId);
+  const onVariableChange = (newVariable) => {
+    let varialeOpt = variableOptionsMap.get(newVariable);
+    let leftId = varialeOpt ? varialeOpt.id : null;
+    triggerChange({ ...ruleCond, leftId: leftId });
+  };
   ////////////////////////
 
   //////  operators //////
-  const onOperatorChange = (newOperator) =>{
-    triggerChange({...ruleCond, operatorCode: newOperator});
-  };
-
   const operatorOptions = [];
+  let defaultOperator = {};
   const operatorOptionsMap = new Map();
-  operators.forEach((value, key) => {
-    var opt  = {label:value, value:key};
+  operators.forEach((ele) => {
+    var opt = { label: ele.name, value: ele.code };
     operatorOptions.push(opt);
-    operatorOptionsMap.set(key, opt);
-});
+    operatorOptionsMap.set(ele.code, ele);
+    if (ele.code == ruleCond.operatorCode) {
+      defaultOperator = { label: ele.name, value: ele.code };
+    }
+  });
 
-  const defaultOperator = operatorOptionsMap.get(ruleCond.operatorCode);
+  const onOperatorChange = (newOperator) => {
+    triggerChange({ ...ruleCond, operatorCode: newOperator });
+  };
   //////  right value //////
 
-  const onRightValueChange = (e) =>{
-    let newRightValue  = e.target.value;
-    triggerChange({...ruleCond, rightValue: newRightValue});
+  const onRightValueChange = (e) => {
+    let newRightValue = e.target.value;
+    triggerChange({ ...ruleCond, rightValue: newRightValue });
   };
 
   //////  delete button //////
-  const onRuleDelete = (e) =>{
+  const onRuleDelete = (e) => {
     onDelete(e);
   };
-   
+
   return (
     <>
-        <Col span={10}>
-            <Select
-              showSearch
-              style={{ width: 200 }}
-              placeholder="Variable"
-              optionFilterProp="label"
-              filterOption={(input, option) =>
-                option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              filterSort={(optionA, optionB) =>
-                optionA.label.toLowerCase().localeCompare(optionB.label.toLowerCase())
-              }
-              options={variableOptions}
-              defaultValue={defaultVaraible}
-              onChange={onVariableChange}
-             />
-        </Col>
-        <Col span={6}>
-          <Select
-              showSearch
-              style={{ width: 100 }}
-              placeholder="Operator"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              filterSort={(optionA, optionB) =>
-                optionA.label.toLowerCase().localeCompare(optionB.label.toLowerCase())
-              }
-              options={operatorOptions}
-              defaultValue={defaultOperator}
-              onChange={onOperatorChange}
-            />
-        </Col>
-        <Col span={6}>
-            <Input  
-             placeholder='value' 
-             value={ruleCond.rightValue}
-             onChange={onRightValueChange}
-            />
-        </Col>
-        <Col span={2}>
-          <Row gutter={16}>
-            <Col>
-            {showMinus && 
+      <Col span={10}>
+        <Select
+          showSearch
+          style={{ width: 200 }}
+          placeholder="Variable"
+          optionFilterProp="label"
+          filterOption={(input, option) =>
+            option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          filterSort={(optionA, optionB) =>
+            optionA.label.toLowerCase().localeCompare(optionB.label.toLowerCase())
+          }
+          options={variableOptions}
+          defaultValue={defaultVaraible}
+          onChange={onVariableChange}
+        />
+      </Col>
+      <Col span={6}>
+        <Select
+          showSearch
+          style={{ width: 100 }}
+          placeholder="Operator"
+          optionFilterProp="children"
+          filterOption={(input, option) =>
+            option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          filterSort={(optionA, optionB) =>
+            optionA.label.toLowerCase().localeCompare(optionB.label.toLowerCase())
+          }
+          options={operatorOptions}
+          defaultValue={defaultOperator}
+          onChange={onOperatorChange}
+        />
+      </Col>
+      <Col span={6}>
+        <Input placeholder="value" value={ruleCond.rightValue} onChange={onRightValueChange} />
+      </Col>
+      <Col span={2}>
+        <Row gutter={16}>
+          <Col>
+            {showMinus && (
               <Button
-                  type="primary"
-                  shape="circle"
-                  icon={<MinusOutlined />}
-                  onClick={onRuleDelete}
-                />
-            }
-            </Col>
-          </Row>
-        </Col>
-      </>
+                type="primary"
+                shape="circle"
+                icon={<MinusOutlined />}
+                onClick={onRuleDelete}
+              />
+            )}
+          </Col>
+        </Row>
+      </Col>
+    </>
   );
-
 };
-
 
 export default SingleRule;
