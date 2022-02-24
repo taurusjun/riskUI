@@ -201,17 +201,14 @@ export function getRoutes() {
       },
       {
         "path": "/Rule",
+        "name": "Rule",
+        "icon": "smile",
         "routes": [
           {
-            "path": "/Rule",
-            "routes": [
-              {
-                "name": "RuleEdit",
-                "path": "/Rule/RuleEdit",
-                "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Rule__RuleEdit' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Rule/RuleEdit'), loading: LoadingComponent}),
-                "exact": true
-              }
-            ]
+            "name": "RuleEdit",
+            "path": "/Rule/RuleEdit",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Rule__RuleEdit' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Rule/RuleEdit'), loading: LoadingComponent}),
+            "exact": true
           },
           {
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/Users/juwang1/PG/test/my/riskUI/src/pages/404'), loading: LoadingComponent}),
@@ -241,47 +238,13 @@ export function getRoutes() {
         ]
       },
       {
-        "path": "/welcome",
-        "name": "welcome",
-        "icon": "smile",
-        "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Welcome' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Welcome'), loading: LoadingComponent}),
-        "exact": true
-      },
-      {
-        "path": "/admin",
-        "name": "admin",
-        "icon": "crown",
-        "access": "canAdmin",
-        "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Admin' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Admin'), loading: LoadingComponent}),
-        "routes": [
-          {
-            "path": "/admin/sub-page",
-            "name": "sub-page",
-            "icon": "smile",
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Welcome' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Welcome'), loading: LoadingComponent}),
-            "exact": true
-          },
-          {
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/Users/juwang1/PG/test/my/riskUI/src/pages/404'), loading: LoadingComponent}),
-            "exact": true
-          }
-        ]
-      },
-      {
-        "name": "list.table-list",
-        "icon": "table",
-        "path": "/list",
-        "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__TableList' */'/Users/juwang1/PG/test/my/riskUI/src/pages/TableList'), loading: LoadingComponent}),
-        "exact": true
-      },
-      {
         "path": "/index.html",
-        "redirect": "/welcome",
+        "redirect": "/Rule/RuleEdit",
         "exact": true
       },
       {
         "path": "/",
-        "redirect": "/welcome",
+        "redirect": "/Rule/RuleEdit",
         "exact": true
       },
       {

@@ -254,7 +254,7 @@ function getRuleEditInfo(req, res, u) {
 }
 
 export default {
-  'GET /api/ruleEditPageInfo': getRuleEditInfo,
+  'GET /api/ruleedit': getRuleEditInfo,
   'GET /api/rulequery': getRulequery,
   'GET /api/variables': variableDict,
   'GET /api/operators': operatorDict,
