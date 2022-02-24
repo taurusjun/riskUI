@@ -5,7 +5,8 @@ import { request } from 'umi';
 
 /** 获取规则列表 GET /api/rule */
 export async function ruleEditPageInfo(params, options) {
-  return request('/api/ruleEditPageInfo', {
+  // return request('/api/ruleEditPageInfo', {
+  return request('http://127.0.0.1:8080/crudwebservice/ruleedit', {
     method: 'GET',
     params: { ...params },
     ...(options || {}),
@@ -35,6 +36,17 @@ export async function operatorDict(params, options) {
   return request('/api/operators', {
     method: 'GET',
     params: { ...params },
+    ...(options || {}),
+  });
+}
+
+/** 规则 POST /api/rule */
+
+export async function rulechange(data, options) {
+  return request('http://127.0.0.1:8080/crudwebservice/rulechange', {
+    // return request('/api/rule', {
+    data,
+    method: 'POST',
     ...(options || {}),
   });
 }

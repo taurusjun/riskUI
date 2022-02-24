@@ -6,11 +6,15 @@ import styles from './index.less';
 import Rule from './components/Rule';
 import { useForceUpdate } from './components/useForceUpdate';
 import { keygenerator } from './components/Keygenerator';
-import { ruleEditPageInfo } from './service';
+import { ruleEditPageInfo, rulechange } from './service';
 import { useRequest } from 'umi';
 
 export default () => {
-  const { error, loading, data: data } = useRequest(ruleEditPageInfo);
+  const {
+    error,
+    loading,
+    data: data,
+  } = useRequest(() => ruleEditPageInfo({ uuid: '96668402-87fc-11ec-a8a3-0242ac120002' }));
 
   const rule = loading ? {} : data.rule;
   const ruleGroups = loading ? [] : rule.ruleGroups;
@@ -24,6 +28,8 @@ export default () => {
   });
 
   const logicOpsJson = {
+    OR: 'OR',
+    AND: 'AND',
     or: 'OR',
     and: 'AND',
   };
@@ -35,7 +41,9 @@ export default () => {
   };
 
   const onFinish = () => {
-    console.log('rule:', JSON.stringify(rule));
+    let data = JSON.stringify(rule);
+    console.log('rule:', data);
+    rulechange(rule);
   };
 
   return (
