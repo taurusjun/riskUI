@@ -30,8 +30,6 @@ export default () => {
   const logicOpsJson = {
     OR: 'OR',
     AND: 'AND',
-    or: 'OR',
-    and: 'AND',
   };
   const logicOps = new Map(Object.entries(logicOpsJson));
   ///////
