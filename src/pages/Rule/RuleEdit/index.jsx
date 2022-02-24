@@ -13,6 +13,7 @@ export default () => {
   const {
     error,
     loading,
+    run,
     data: data,
   } = useRequest(() => ruleEditPageInfo({ uuid: '96668402-87fc-11ec-a8a3-0242ac120002' }));
 
@@ -38,10 +39,15 @@ export default () => {
     rule.ruleGroups = changedRule;
   };
 
-  const onFinish = () => {
-    let data = JSON.stringify(rule);
-    console.log('rule:', data);
-    rulechange(rule);
+  const forceUpdate = useForceUpdate();
+  const onFinish = async () => {
+    // e.preventDefault();
+    // let data = JSON.stringify(rule);
+    // console.log('rule:', data);
+    try {
+      await rulechange(rule);
+      run();
+    } catch (error) {}
   };
 
   return (
