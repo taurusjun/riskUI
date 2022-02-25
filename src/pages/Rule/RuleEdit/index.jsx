@@ -39,11 +39,7 @@ export default () => {
     rule.ruleGroups = changedRule;
   };
 
-  const forceUpdate = useForceUpdate();
   const onFinish = async () => {
-    // e.preventDefault();
-    // let data = JSON.stringify(rule);
-    // console.log('rule:', data);
     try {
       await rulechange(rule);
       run();
@@ -61,17 +57,19 @@ export default () => {
         <Spin spinning={loading} size="large" delay={300}>
           {!loading && (
             <>
-              <Rule
-                variables={data.variablesArray}
-                operators={data.operatorsArray}
-                logicOps={logicOps}
-                rule={ruleGroups}
-                onChange={onRuleChange}
-              />
+              <div>
+                <Rule
+                  variables={data.variablesArray}
+                  operators={data.operatorsArray}
+                  logicOps={logicOps}
+                  rule={ruleGroups}
+                  onChange={onRuleChange}
+                />
+                <Button type="primary" htmlType="submit" onClick={onFinish}>
+                  Submit
+                </Button>
+              </div>
               <Divider> Process Action </Divider>
-              <Button type="primary" htmlType="submit" onClick={onFinish}>
-                Submit
-              </Button>
             </>
           )}
         </Spin>

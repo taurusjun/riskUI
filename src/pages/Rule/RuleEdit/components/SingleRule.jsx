@@ -1,6 +1,7 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Select, Input, Form, Spin, Card, Col, Popover, Row, message, Button } from 'antd';
 import { useState, useEffect } from 'react';
+import styles from './index.less';
 
 const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, onDelete }) => {
   const ruleCond = ruleCondition;
@@ -65,6 +66,7 @@ const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, 
       <Col span={10}>
         <Select
           showSearch
+          className={styles.customSelect}
           style={{ width: 200 }}
           placeholder="Variable"
           optionFilterProp="label"
@@ -82,6 +84,7 @@ const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, 
       <Col span={6}>
         <Select
           showSearch
+          className={styles.customSelect}
           style={{ width: 100 }}
           placeholder="Operator"
           optionFilterProp="children"

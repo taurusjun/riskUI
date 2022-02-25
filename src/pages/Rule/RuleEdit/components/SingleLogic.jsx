@@ -1,6 +1,7 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Select, Input, Form, Spin, Card, Col, Popover, Row, message, Button } from 'antd';
 import { useState, useEffect } from 'react';
+import styles from './index.less';
 
 const SingleLogic = ({ logicOps, logic, onChange }) => {
   const [logicValue, setLogicValue] = useState(logic);
@@ -29,6 +30,7 @@ const SingleLogic = ({ logicOps, logic, onChange }) => {
   return (
     <>
       <Select
+        className={styles.customSelect}
         style={{ width: 100 }}
         placeholder="Select"
         options={logicOptions}

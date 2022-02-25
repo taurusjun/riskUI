@@ -238,6 +238,13 @@ export function getRoutes() {
         ]
       },
       {
+        "name": "list.table-list",
+        "icon": "table",
+        "path": "/list",
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__TableList' */'/Users/juwang1/PG/test/my/riskUI/src/pages/TableList'), loading: LoadingComponent}),
+        "exact": true
+      },
+      {
         "path": "/index.html",
         "redirect": "/Rule/RuleEdit",
         "exact": true
