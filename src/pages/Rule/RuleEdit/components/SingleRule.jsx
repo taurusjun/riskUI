@@ -63,11 +63,11 @@ const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, 
 
   return (
     <>
-      <Col span={10}>
+      <div style={{ display: 'inline-block' }}>
         <Select
           showSearch
           className={styles.customSelect}
-          style={{ width: 200 }}
+          style={{ width: 150 }}
           placeholder="Variable"
           optionFilterProp="label"
           filterOption={(input, option) =>
@@ -80,8 +80,8 @@ const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, 
           defaultValue={defaultVaraible}
           onChange={onVariableChange}
         />
-      </Col>
-      <Col span={6}>
+      </div>
+      <div style={{ display: 'inline-block', marginLeft: 10, marginRight: 10 }}>
         <Select
           showSearch
           className={styles.customSelect}
@@ -98,24 +98,15 @@ const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, 
           defaultValue={defaultOperator}
           onChange={onOperatorChange}
         />
-      </Col>
-      <Col span={6}>
+      </div>
+      <div style={{ display: 'inline-block' }}>
         <Input placeholder="value" value={ruleCond.rightValue} onChange={onRightValueChange} />
-      </Col>
-      <Col span={2}>
-        <Row gutter={16}>
-          <Col>
-            {showMinus && (
-              <Button
-                type="primary"
-                shape="circle"
-                icon={<MinusOutlined />}
-                onClick={onRuleDelete}
-              />
-            )}
-          </Col>
-        </Row>
-      </Col>
+      </div>
+      <div style={{ display: 'inline-block', marginLeft: 10 }}>
+        {showMinus && (
+          <Button type="primary" shape="circle" icon={<MinusOutlined />} onClick={onRuleDelete} />
+        )}
+      </div>
     </>
   );
 };
