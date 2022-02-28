@@ -13,12 +13,13 @@ import {
   Button,
   Divider,
 } from 'antd';
-import React, { useState, setState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import styles from '../style.less';
 import SingleRule from './SingleRule';
 import SingleLogic from './SingleLogic';
 import styles from './index.less';
 import { keygenerator } from './Keygenerator';
+import { connectLines } from './DOMConnector';
 
 const RuleGroup = ({
   variables,
@@ -30,8 +31,10 @@ const RuleGroup = ({
   onDelete,
 }) => {
   const [ruleGrp, setRuleGrp] = useState(ruleGroup);
+  const [posArray, setArray] = useState([]);
 
   const triggerChange = (changedValue) => {
+    setArray([]);
     onChange?.(changedValue);
   };
 
@@ -68,6 +71,27 @@ const RuleGroup = ({
     onDelete?.(e);
   };
 
+  /////  calculate line position //////
+  const condBaseKey = ruleGrp[0]._key;
+
+  const calcNthPos = (conditionIndex) => {
+    let ele1 = document.getElementById('cond-base' + condBaseKey);
+    let ele2 = document.getElementById('c' + condBaseKey + '_' + conditionIndex);
+    let ele3 = document.getElementById('co' + condBaseKey + '_' + conditionIndex);
+    return connectLines(ele1, ele2, ele3);
+  };
+
+  ///////
+  // user effect to render lines
+  useEffect(() => {
+    let conditions = ruleGrp.length;
+    let newPosArray = [];
+    for (let i = 1; i < conditions; i++) {
+      newPosArray[i] = calcNthPos(i);
+    }
+    setArray(newPosArray);
+  }, [ruleGrp]);
+
   const ruleGroupHtml = [];
   for (let i = 0; i < ruleGrp.length; i++) {
     let condtion = ruleGrp[i];
@@ -77,14 +101,16 @@ const RuleGroup = ({
         <Row gutter={16} style={{ margin: 10 }}>
           <Col>
             <div
+              id={'co' + condBaseKey + '_' + i}
               style={{
                 padding: 0,
-                margin: 0,
+                marginTop: posArray[i] && posArray[i].marginTop,
+                marginLeft: posArray[i] && posArray[i].marginLeft,
                 height: 2,
                 backgroundColor: 'blue',
                 lineHeight: 1,
-                width: 65,
-                transform: 'rotate(270deg) translateY(36px) translateX(-5px)',
+                width: posArray[i] && posArray[i].width,
+                transform: posArray[i] && 'rotate(' + posArray[i].angle + 'deg)',
               }}
             />
           </Col>
@@ -98,6 +124,7 @@ const RuleGroup = ({
           {i == 0 && (
             <>
               <div
+                id={'cond-base' + condBaseKey}
                 style={{
                   padding: 0,
                   margin: 0,
@@ -113,6 +140,7 @@ const RuleGroup = ({
           {i != 0 && (
             <>
               <div
+                id={'c' + condBaseKey + '_' + i}
                 style={{
                   padding: 0,
                   margin: 0,

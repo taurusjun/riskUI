@@ -6,6 +6,7 @@ import SingleLogic from './SingleLogic';
 import RuleGroup from './RuleGroup';
 import styles from './index.less';
 import { keygenerator } from './Keygenerator';
+import { connectLines } from './DOMConnector';
 
 const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
   const [rle, setRle] = useState(rule);
@@ -58,48 +59,17 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
     setRle(rleCopy);
     triggerChange(rleCopy);
   };
-  ///
-  const getOffset = (el) => {
-    const rect = el.getBoundingClientRect();
-    return {
-      left: rect.left + window.pageXOffset,
-      top: rect.top + window.pageYOffset,
-      // left: rect.left + window.pageXOffset,
-      // top: rect.top + window.pageYOffset,
-      bottom: rect.bottom + window.pageXOffset,
-      right: rect.right + window.pageYOffset,
-      width: rect.width || el.offsetWidth,
-      height: rect.height || el.offsetHeight,
-    };
-  };
 
+  /////  calculate line position //////
   const calcNthPos = (groupIndex) => {
-    let ele1 = document.getElementById('base');
+    let ele1 = document.getElementById('grp-base');
     let ele2 = document.getElementById('g' + groupIndex);
     let ele3 = document.getElementById('o' + groupIndex);
-    let d1 = getOffset(ele1);
-    let d2 = getOffset(ele2);
-    let o = getOffset(ele3);
-    let thickness = 2;
-    let width = d2.bottom - d1.bottom;
-
-    let cy = (d1.bottom + d2.bottom) / 2 - thickness / 2;
-    let cx = d2.left - width / 2;
-
-    let ox = o.left;
-    let oy = o.bottom;
-
-    let marginTop = cy - oy;
-    let marginLeft = cx - ox;
-
-    return {
-      width: width,
-      marginTop: marginTop,
-      marginLeft: marginLeft,
-      angle: 90,
-    };
+    return connectLines(ele1, ele2, ele3);
   };
 
+  ///////
+  // user effect to render lines
   useEffect(() => {
     let groups = rle.length;
     let newPosArray = [];
@@ -142,14 +112,26 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
           {i == 0 && (
             <>
               <div
-                id="base"
+                id="grp-base"
                 style={{
                   padding: 0,
                   marginTop: 30,
                   height: 2,
                   backgroundColor: 'blue',
                   lineHeight: 1,
-                  width: 200,
+                  width: 50,
+                  verticalAlign: 'top',
+                  display: 'inline-block',
+                }}
+              />
+              <div
+                style={{
+                  padding: 0,
+                  marginTop: 30,
+                  height: 2,
+                  backgroundColor: 'blue',
+                  lineHeight: 1,
+                  width: 100,
                   verticalAlign: 'top',
                   display: 'inline-block',
                 }}
@@ -166,8 +148,8 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
                   height: 2,
                   backgroundColor: 'blue',
                   lineHeight: 1,
-                  width: 30,
-                  marginLeft: 70,
+                  width: 20,
+                  marginLeft: 30,
                   verticalAlign: 'top',
                   display: 'inline-block',
                 }}
