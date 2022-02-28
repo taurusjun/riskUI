@@ -206,7 +206,7 @@ export function getRoutes() {
         "routes": [
           {
             "name": "RuleEdit",
-            "path": "/Rule/RuleEdit",
+            "path": "/Rule/RuleEdit/:uuid",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Rule__RuleEdit' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Rule/RuleEdit'), loading: LoadingComponent}),
             "exact": true
           },

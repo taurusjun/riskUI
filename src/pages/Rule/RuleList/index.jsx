@@ -9,6 +9,7 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 // import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
 import { rulelist } from '../service';
+import { Link } from 'umi';
 // /**
 //  * @en-US Add node
 //  * @zh-CN 添加节点
@@ -127,23 +128,14 @@ const TableList = () => {
     {
       title: (
         <FormattedMessage
-          id="pages.searchTable.updateForm.ruleName.nameLabel"
+          id="pages.searchTable.updateForm.ruleCode.nameLabel"
           defaultMessage="Rule code"
         />
       ),
       dataIndex: 'code',
       tip: 'The rule code is the unique key',
       render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
+        return <Link to={'/Rule/RuleEdit/' + entity.uuid}>{dom}</Link>;
       },
     },
     {

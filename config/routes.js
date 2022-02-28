@@ -6,7 +6,7 @@ export default [
     routes: [
       {
         name: 'RuleEdit',
-        path: '/Rule/RuleEdit',
+        path: '/Rule/RuleEdit/:uuid',
         component: './Rule/RuleEdit',
       },
       {

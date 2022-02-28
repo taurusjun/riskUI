@@ -8,14 +8,16 @@ import { useForceUpdate } from './components/useForceUpdate';
 import { keygenerator } from './components/Keygenerator';
 import { ruleEditPageInfo, rulechange } from '../service';
 import { useRequest } from 'umi';
+import { useParams } from 'umi';
 
-export default () => {
+export default (props) => {
+  const params = useParams();
   const {
     error,
     loading,
     run,
     data: data,
-  } = useRequest(() => ruleEditPageInfo({ uuid: '96668402-87fc-11ec-a8a3-0242ac120002' }));
+  } = useRequest(() => ruleEditPageInfo({ uuid: params.uuid }));
 
   const rule = loading ? {} : data.rule;
   const ruleGroups = loading ? [] : rule.ruleGroups;
