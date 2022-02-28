@@ -22,6 +22,15 @@ export async function rulequery(params, options) {
   });
 }
 
+/** 获取规则列表 GET /api/rule */
+export async function rulelist(params, options) {
+  return request('/api/rulelist', {
+    method: 'GET',
+    params: { ...params },
+    ...(options || {}),
+  });
+}
+
 /** 获取变量列表 */
 export async function variableDict(params, options) {
   return request('/api/variables', {

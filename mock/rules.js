@@ -253,7 +253,51 @@ function getRuleEditInfo(req, res, u) {
   return res.json({ data: result });
 }
 
+function getAllRules(req, res, u) {
+  let realUrl = u;
+
+  if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
+    realUrl = req.url;
+  }
+
+  const { current = 1, pageSize = 10 } = req.query;
+  const params = parse(realUrl, true).query;
+
+  const rule1 = {
+    uuid: '96668402-87fc-11ec-a8a3-0242ac120002',
+    name: 'rule001',
+    code: 'rule001',
+    categoryId: 1,
+    description: '测试规则001',
+    status: 'online',
+    version: 1,
+  };
+
+  const rule2 = {
+    uuid: '11111111-2222-333-4444-5555555',
+    name: 'rule002',
+    code: 'rule002',
+    categoryId: 1,
+    description: '测试规则002',
+    status: 'online',
+    version: 1,
+  };
+
+  const result = [];
+  result[0] = rule1;
+  result[1] = rule2;
+
+  return res.json({
+    data: result,
+    total: 10,
+    success: true,
+    pageSize: 10,
+    current: 1,
+  });
+}
+
 export default {
+  'GET /api/rulelist': getAllRules,
   'GET /api/ruleedit': getRuleEditInfo,
   'GET /api/rulequery': getRulequery,
   'GET /api/variables': variableDict,

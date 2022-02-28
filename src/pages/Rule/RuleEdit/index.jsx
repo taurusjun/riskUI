@@ -6,7 +6,7 @@ import styles from './index.less';
 import Rule from './components/Rule';
 import { useForceUpdate } from './components/useForceUpdate';
 import { keygenerator } from './components/Keygenerator';
-import { ruleEditPageInfo, rulechange } from './service';
+import { ruleEditPageInfo, rulechange } from '../service';
 import { useRequest } from 'umi';
 
 export default () => {

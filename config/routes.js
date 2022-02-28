@@ -10,6 +10,11 @@ export default [
         component: './Rule/RuleEdit',
       },
       {
+        name: 'RuleList',
+        path: '/Rule/RuleList',
+        component: './Rule/RuleList',
+      },
+      {
         component: './404',
       },
     ],
@@ -65,7 +70,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/Rule/RuleEdit',
+    redirect: '/Rule/RuleList',
   },
   {
     component: './404',

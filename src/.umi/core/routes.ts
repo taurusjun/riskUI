@@ -211,6 +211,12 @@ export function getRoutes() {
             "exact": true
           },
           {
+            "name": "RuleList",
+            "path": "/Rule/RuleList",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Rule__RuleList' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Rule/RuleList'), loading: LoadingComponent}),
+            "exact": true
+          },
+          {
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/Users/juwang1/PG/test/my/riskUI/src/pages/404'), loading: LoadingComponent}),
             "exact": true
           }
@@ -246,12 +252,12 @@ export function getRoutes() {
       },
       {
         "path": "/index.html",
-        "redirect": "/Rule/RuleEdit",
+        "redirect": "/Rule/RuleList",
         "exact": true
       },
       {
         "path": "/",
-        "redirect": "/Rule/RuleEdit",
+        "redirect": "/Rule/RuleList",
         "exact": true
       },
       {
