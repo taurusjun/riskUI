@@ -1,6 +1,6 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Text, Select, Input, Form, Spin, Card, Col, Popover, Row, message, Button } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SingleRule from './SingleRule';
 import SingleLogic from './SingleLogic';
 import RuleGroup from './RuleGroup';
@@ -9,8 +9,10 @@ import { keygenerator } from './Keygenerator';
 
 const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
   const [rle, setRle] = useState(rule);
+  const [posArray, setArray] = useState([]);
 
   const triggerChange = (changedValue) => {
+    setArray([]);
     onChange?.(changedValue);
   };
 
@@ -56,6 +58,56 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
     setRle(rleCopy);
     triggerChange(rleCopy);
   };
+  ///
+  const getOffset = (el) => {
+    const rect = el.getBoundingClientRect();
+    return {
+      left: rect.left + window.pageXOffset,
+      top: rect.top + window.pageYOffset,
+      // left: rect.left + window.pageXOffset,
+      // top: rect.top + window.pageYOffset,
+      bottom: rect.bottom + window.pageXOffset,
+      right: rect.right + window.pageYOffset,
+      width: rect.width || el.offsetWidth,
+      height: rect.height || el.offsetHeight,
+    };
+  };
+
+  const calcNthPos = (groupIndex) => {
+    let ele1 = document.getElementById('base');
+    let ele2 = document.getElementById('g' + groupIndex);
+    let ele3 = document.getElementById('o' + groupIndex);
+    let d1 = getOffset(ele1);
+    let d2 = getOffset(ele2);
+    let o = getOffset(ele3);
+    let thickness = 2;
+    let width = d2.bottom - d1.bottom;
+
+    let cy = (d1.bottom + d2.bottom) / 2 - thickness / 2;
+    let cx = d2.left - width / 2;
+
+    let ox = o.left;
+    let oy = o.bottom;
+
+    let marginTop = cy - oy;
+    let marginLeft = cx - ox;
+
+    return {
+      width: width,
+      marginTop: marginTop,
+      marginLeft: marginLeft,
+      angle: 90,
+    };
+  };
+
+  useEffect(() => {
+    let groups = rle.length;
+    let newPosArray = [];
+    for (let i = 1; i < groups; i++) {
+      newPosArray[i] = calcNthPos(i);
+    }
+    setArray(newPosArray);
+  }, [rle]);
 
   ////
   const ruleHtml = [];
@@ -67,14 +119,16 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
         <Row style={{ marginTop: 20 }}>
           <Col>
             <div
+              id={'o' + i}
               style={{
                 padding: 0,
-                marginTop: 30,
+                marginTop: posArray[i] && posArray[i].marginTop,
+                marginLeft: posArray[i] && posArray[i].marginLeft,
                 height: 2,
                 backgroundColor: 'blue',
                 lineHeight: 1,
-                width: 280,
-                transform: 'rotate(270deg) translateY(-70px) translateX(108px)',
+                width: posArray[i] && posArray[i].width,
+                transform: posArray[i] && 'rotate(' + posArray[i].angle + 'deg)',
               }}
             />
           </Col>
@@ -88,6 +142,7 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
           {i == 0 && (
             <>
               <div
+                id="base"
                 style={{
                   padding: 0,
                   marginTop: 30,
@@ -104,6 +159,7 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
           {i != 0 && (
             <>
               <div
+                id={'g' + i}
                 style={{
                   padding: 0,
                   marginTop: 30,
@@ -114,7 +170,6 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
                   marginLeft: 70,
                   verticalAlign: 'top',
                   display: 'inline-block',
-                  // transform:'rotate(90deg)'
                 }}
               />
               <div
@@ -184,6 +239,21 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
           <div className={styles.border_less_wrapper}>{ruleHtml}</div>
         </Row>
       </Card>
+      {/* <div
+        id="test11"
+        style={{
+          padding: '0px',
+          margin: '0px',
+          height: '2px',
+          backgroundColor: 'red',
+          lineHeight: '1px',
+          position: 'absolute',
+          left: 231.4296875,
+          top: 477.5703125,
+          width: 249.140625,
+          transform: 'rotate(90deg)',
+        }}
+      /> */}
     </>
   );
 };
