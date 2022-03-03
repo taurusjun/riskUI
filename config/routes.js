@@ -14,6 +14,11 @@ export default [
         path: '/Rule/RuleList',
         component: './Rule/RuleList',
       },
+      // {
+      //   name: 'RuleNew',
+      //   path: '/Rule/RuleNew',
+      //   component: './Rule/RuleNew',
+      // },
       {
         component: './404',
       },

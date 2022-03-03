@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Select, Input, Form, Spin, Card, Col, Popover, Row, message, Button, Divider } from 'antd';
 import styles from './index.less';
-import Rule from './components/Rule';
-import { useForceUpdate } from './components/useForceUpdate';
-import { keygenerator } from './components/Keygenerator';
+import Rule from '../components/Rule';
+import { useForceUpdate } from '../components/useForceUpdate';
+import { keygenerator } from '../components/Keygenerator';
 import { ruleEditPageInfo, rulechange } from '../service';
 import { useRequest } from 'umi';
 import { useParams } from 'umi';
@@ -20,6 +20,7 @@ export default (props) => {
   } = useRequest(() => ruleEditPageInfo({ uuid: params.uuid }));
 
   const rule = loading ? {} : data.rule;
+  // const [rule, setRule] = useState(loading ? {} : data.rule);
   const ruleGroups = loading ? [] : rule.ruleGroups;
   //add '_key' property for all element
   //'_key' would be used in component 'key' property
@@ -38,7 +39,11 @@ export default (props) => {
   ///////
 
   const onRuleChange = (changedRule) => {
-    rule.ruleGroups = changedRule;
+    console.log('rule:');
+    console.log(rule);
+    console.log('changedRule:');
+    console.log(changedRule);
+    // setRule({ ...changedRule });
   };
 
   const onFinish = async () => {
@@ -49,13 +54,8 @@ export default (props) => {
   };
 
   return (
-    <PageContainer content="策略编辑" className={styles.main}>
-      <div
-      // style={{
-      //   paddingTop: 100,
-      //   textAlign: 'center',
-      // }}
-      >
+    <PageContainer className={styles.main}>
+      <div>
         <Spin spinning={loading} size="large" delay={300}>
           {!loading && (
             <>
@@ -64,7 +64,7 @@ export default (props) => {
                   variables={data.variablesArray}
                   operators={data.operatorsArray}
                   logicOps={logicOps}
-                  rule={ruleGroups}
+                  rule={rule}
                   onChange={onRuleChange}
                 />
                 <Button type="primary" htmlType="submit" onClick={onFinish}>

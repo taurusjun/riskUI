@@ -9,7 +9,12 @@ import { keygenerator } from './Keygenerator';
 import { connectLines } from './DOMConnector';
 
 const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
-  const [rle, setRle] = useState(rule);
+  const [rleGroups, setRleGroups] = useState(rule.ruleGroups);
+  const [rleProps, setRleProps] = useState({
+    name: rule.name,
+    code: rule.code,
+    description: rule.description,
+  });
   const [posArray, setArray] = useState([]);
 
   const triggerChange = (changedValue) => {
@@ -18,27 +23,30 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
   };
 
   const onRuleGroupChange = (index, changedRuleConditions) => {
-    let rleCopy = Object.assign([], rle);
-    rleCopy[index].ruleConditions = changedRuleConditions;
+    let rleGroupsCopy = Object.assign([], rleGroups);
+    rleGroupsCopy[index].ruleConditions = changedRuleConditions;
+    setRleGroups(rleGroupsCopy);
 
-    setRle(rleCopy);
-    triggerChange(rleCopy);
+    rule.ruleGroups = rleGroupsCopy;
+    triggerChange(rule);
   };
 
   const onRuleGroupDelete = (index) => {
-    let rleCopy = Object.assign([], rle);
-    rleCopy.splice(index, 1);
+    let rleGroupsCopy = Object.assign([], rleGroups);
+    rleGroupsCopy.splice(index, 1);
+    setRleGroups(rleGroupsCopy);
 
-    setRle(rleCopy);
-    triggerChange(rleCopy);
+    rule.ruleGroups = rleGroupsCopy;
+    triggerChange(rule);
   };
 
   const onLogicChange = (index, changedLogic) => {
-    let rleCopy = Object.assign([], rle);
-    rleCopy[index].logicCode = changedLogic;
+    let rleGroupsCopy = Object.assign([], rleGroups);
+    rleGroupsCopy[index].logicCode = changedLogic;
+    setRleGroups(rleGroupsCopy);
 
-    setRle(rleCopy);
-    triggerChange(rleCopy);
+    rule.ruleGroups = rleGroupsCopy;
+    triggerChange(rule);
   };
 
   const addNewRuleGroup = (e) => {
@@ -53,11 +61,30 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
     };
 
     newRuleGrp.ruleConditions.push(newRuleCondition);
-    let rleCopy = Object.assign([], rle);
-    rleCopy.push(newRuleGrp);
+    let rleGroupsCopy = Object.assign([], rleGroups);
+    rleGroupsCopy.push(newRuleGrp);
+    setRleGroups(rleGroupsCopy);
 
-    setRle(rleCopy);
-    triggerChange(rleCopy);
+    rule.ruleGroups = rleGroupsCopy;
+    triggerChange(rule);
+  };
+
+  const onCodeChange = (e) => {
+    let newCodeValue = e.target.value;
+    rule.code = newCodeValue;
+    triggerChange(rule);
+  };
+
+  const onNameChange = (e) => {
+    let newValue = e.target.value;
+    rule.name = newValue;
+    triggerChange(rule);
+  };
+
+  const onDescriptionChange = (e) => {
+    let newValue = e.target.value;
+    rule.description = newValue;
+    triggerChange(rule);
   };
 
   /////  calculate line position //////
@@ -71,18 +98,18 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
   ///////
   // user effect to render lines
   useEffect(() => {
-    let groups = rle.length;
+    let groups = rleGroups.length;
     let newPosArray = [];
     for (let i = 1; i < groups; i++) {
       newPosArray[i] = calcNthPos(i);
     }
     setArray(newPosArray);
-  }, [rle]);
+  }, [rleGroups]);
 
   ////
   const ruleHtml = [];
-  for (let i = 0; i < rle.length; i++) {
-    let group = rle[i];
+  for (let i = 0; i < rleGroups.length; i++) {
+    let group = rleGroups[i];
     let showHeadMinus = false;
     if (i != 0) {
       ruleHtml.push(
@@ -201,42 +228,100 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
 
   ////
   return (
-    <>
-      <Card
-        title={
-          <div>
-            Rule{' '}
-            <Button
-              type="primary"
-              shape="circle"
-              icon={<PlusOutlined />}
-              onClick={addNewRuleGroup}
-            />
-          </div>
-        }
-        className={styles.card}
-        bordered={false}
-      >
-        <Row align="middle">
-          <div className={styles.border_less_wrapper}>{ruleHtml}</div>
-        </Row>
-      </Card>
-      {/* <div
-        id="test11"
-        style={{
-          padding: '0px',
-          margin: '0px',
-          height: '2px',
-          backgroundColor: 'red',
-          lineHeight: '1px',
-          position: 'absolute',
-          left: 231.4296875,
-          top: 477.5703125,
-          width: 249.140625,
-          transform: 'rotate(90deg)',
-        }}
-      /> */}
-    </>
+    <div className={styles.border_less_wrapper}>
+      <div style={{ marginBottom: 20 }}>
+        <Card title={<div>Rule Properties </div>} className={styles.card} bordered={false}>
+          <Row gutter={10}>
+            <Col>
+              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                  Code
+                </label>
+                <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
+                  <input
+                    name="ruleCode"
+                    key="ruleCode"
+                    defaultValue={rleProps.code}
+                    onChange={onCodeChange}
+                  />
+                </div>
+              </div>
+            </Col>
+            <Col>
+              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                  Name
+                </label>
+                <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
+                  <input
+                    name="ruleName"
+                    key="ruleName"
+                    defaultValue={rleProps.name}
+                    onChange={onNameChange}
+                  />
+                </div>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                  Description
+                </label>
+                <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
+                  <input
+                    name="ruleDescription"
+                    key="ruleDescription"
+                    style={{ width: 400 }}
+                    defaultValue={rule.description}
+                    onChange={onDescriptionChange}
+                  />
+                </div>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={10}>
+            <Col span={24}>
+              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                  Apply to Events:
+                </label>
+                <div style={{ display: 'inline-block', padding: 10, fontSize: 16, width: '50%' }}>
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    style={{ width: '100%' }}
+                    placeholder="Please select"
+                    defaultValue={['payment', 'return']}
+                    // onChange={handleChange}
+                  ></Select>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Card>
+      </div>
+      <div>
+        <Card
+          title={
+            <div>
+              Rule Logic{' '}
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<PlusOutlined />}
+                onClick={addNewRuleGroup}
+              />
+            </div>
+          }
+          className={styles.card}
+          bordered={false}
+        >
+          <Row align="middle">
+            <div className={styles.border_less_wrapper}>{ruleHtml}</div>
+          </Row>
+        </Card>
+      </div>
+    </div>
   );
 };
 
