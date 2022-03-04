@@ -23,6 +23,7 @@ import {
 } from 'antd';
 import styles from './index.less';
 import ComplexRuleLogic from '../components/ComplexRuleLogic';
+import RuleAction from '../components/RuleAction';
 import { useForceUpdate } from '../components/useForceUpdate';
 import { keygenerator } from '../components/Keygenerator';
 import { ruleEditPageInfo, rulechange } from '../service';
@@ -58,10 +59,6 @@ export default (props) => {
   ///////
 
   const onRuleGroupsChange = (changedRuleGroups) => {
-    // console.log('rule:');
-    // console.log(rule);
-    // console.log('changedRule:');
-    // console.log(changedRuleGroups);
     rule.ruleGroups = changedRuleGroups;
   };
 
@@ -89,6 +86,9 @@ export default (props) => {
       run();
     } catch (error) {}
   };
+
+  ///////
+  const actionOpts = [1];
 
   return (
     <PageContainer className={styles.main}>
@@ -208,44 +208,41 @@ export default (props) => {
                     }
                     key="2"
                   >
-                    <div style={{ width: 500 }}>
+                    <div style={{ paddingLeft: 25 }}>
                       <div>
-                        <div style={{ fontSize: 20, borderBottom: 'solid 1px' }}>
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: 500,
+                            borderBottom: 'solid 1px',
+                            width: 500,
+                          }}
+                        >
                           Rule is <span style={{ color: 'red' }}>True</span>
                         </div>
-                        <div style={{ padding: 10 }}>
-                          <div style={{ display: 'inline-block', marginRight: 30 }}>
-                            <div>Action</div>
-                            <Select defaultValue="Add tag" style={{ width: '100%' }}>
-                              <Select.Option value="jack">Jack</Select.Option>
-                            </Select>
-                          </div>
-                          <div style={{ display: 'inline-block' }}>
-                            <div>Value</div>
-                            <Select
-                              mode="multiple"
-                              allowClear
-                              style={{ width: '100%' }}
-                              placeholder="Please select"
-                              defaultValue={['highRisk', 'return']}
-                              // onChange={handleChange}
-                            >
-                              <Select.Option value="jack">Jack</Select.Option>
-                            </Select>
-                          </div>
+                        <div style={{ padding: 10, width: 800 }}>
+                          <RuleAction actionOpts={actionOpts} />
                         </div>
                       </div>
                       <div style={{ marginTop: 50 }}>
-                        <div style={{ fontSize: 20, borderBottom: 'solid 1px' }}>
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: 500,
+                            borderBottom: 'solid 1px',
+                            width: 500,
+                          }}
+                        >
                           Rule is <span style={{ color: 'red' }}>False</span>
                         </div>
-                        <div style={{ padding: 10 }}>No Actions</div>
+                        <div style={{ padding: 10, width: 800 }}>
+                          <RuleAction actionOpts={actionOpts} />
+                        </div>
                       </div>
                     </div>
                   </Tabs.TabPane>
                 </Tabs>
               </div>
-              <Divider> Process Action </Divider>
             </>
           )}
         </Spin>

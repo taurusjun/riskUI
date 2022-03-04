@@ -296,7 +296,65 @@ function getAllRules(req, res, u) {
   });
 }
 
+function getRuleActions(req, res, u) {
+  let realUrl = u;
+
+  if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
+    realUrl = req.url;
+  }
+
+  const { current = 1, pageSize = 10 } = req.query;
+  const params = parse(realUrl, true).query;
+
+  const actions1 = {
+    uuid: '123232-87fc-11ec-a8a3-0242ac120002',
+    name: 'AddTag',
+    code: 'addTag',
+    description: 'add tags to the events',
+    input: {
+      type: 'multipleSelect',
+      value: ['highRisk', 'noRisk'],
+    },
+  };
+
+  const actions2 = {
+    uuid: '666121-87fc-11ec-a8a3-0242ac120002',
+    name: 'AddFraudType',
+    code: 'addFraudType',
+    description: 'add fraud types to the events',
+    input: {
+      type: 'singleSelect',
+      value: ['ato', 'dto'],
+    },
+  };
+
+  const actions3 = {
+    uuid: '658968496-87fc-11ec-a8a3-0242ac120002',
+    name: 'AddPath',
+    code: 'addPath',
+    description: 'add path to the events',
+    input: {
+      type: 'input',
+      value: '',
+    },
+  };
+
+  const resultActions = [];
+  resultActions[0] = actions1;
+  resultActions[1] = actions2;
+  resultActions[2] = actions2;
+
+  return res.json({
+    data: resultActions,
+    total: 10,
+    success: true,
+    pageSize: 10,
+    current: 1,
+  });
+}
+
 export default {
+  'GET /api/ruleactionlist': getRuleActions,
   'GET /api/rulelist': getAllRules,
   'GET /api/ruleedit': getRuleEditInfo,
   'GET /api/rulequery': getRulequery,

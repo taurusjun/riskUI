@@ -192,8 +192,6 @@ const RuleGroup = ({
 
   return (
     <>
-      {/* <div>Rule Condition</div>
-    <div style={{border:'1px solid', padding:'20px'}}> */}
       <Card
         title={
           <div>
@@ -211,33 +209,18 @@ const RuleGroup = ({
         }
         bordered={true}
       >
-        {/* <Row gutter={16} justify="center">
-          <Col span={6} textAlign="center">
-              变量
-          </Col>
-          <Col span={6}>
-              操作符
-          </Col>
-          <Col span={6}>
-              比较值
-          </Col>
-          <Col span={4}>
-          </Col>
-        </Row> */}
         {ruleGroupHtml}
         <Row gutter={16} style={{ margin: 10 }}>
           <Col span={24}>
             <Button
               type="primary"
               block
-              // shape="circle"
               icon={<PlusOutlined />}
               onClick={(e) => addNewRuleCondtion(e)}
             />
           </Col>
         </Row>
       </Card>
-      {/* </div>     */}
     </>
   );
 };
