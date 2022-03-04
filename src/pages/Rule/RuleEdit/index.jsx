@@ -1,7 +1,26 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import { useState, useEffect } from 'react';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Select, Input, Form, Spin, Card, Col, Popover, Row, message, Button, Divider } from 'antd';
+import {
+  MinusOutlined,
+  PlusOutlined,
+  ApartmentOutlined,
+  PartitionOutlined,
+  ThunderboltOutlined,
+} from '@ant-design/icons';
+import {
+  Select,
+  Input,
+  Form,
+  Spin,
+  Card,
+  Col,
+  Popover,
+  Row,
+  message,
+  Button,
+  Divider,
+  Tabs,
+} from 'antd';
 import styles from './index.less';
 import ComplexRuleLogic from '../components/ComplexRuleLogic';
 import { useForceUpdate } from '../components/useForceUpdate';
@@ -155,17 +174,42 @@ export default (props) => {
                   </Row>
                 </Card>
               </div>
-              <div>
-                <ComplexRuleLogic
-                  variables={data.variablesArray}
-                  operators={data.operatorsArray}
-                  logicOps={logicOps}
-                  rule={rule.ruleGroups}
-                  onChange={onRuleGroupsChange}
-                />
-                <Button type="primary" htmlType="submit" onClick={onFinish}>
-                  Submit
-                </Button>
+              <div className={styles.card_container}>
+                <Tabs type="card">
+                  <Tabs.TabPane
+                    tab={
+                      <span style={{ fontSize: 16 }}>
+                        <PartitionOutlined />
+                        Complex Rule Logic
+                      </span>
+                    }
+                    key="1"
+                  >
+                    <div>
+                      <ComplexRuleLogic
+                        variables={data.variablesArray}
+                        operators={data.operatorsArray}
+                        logicOps={logicOps}
+                        rule={rule.ruleGroups}
+                        onChange={onRuleGroupsChange}
+                      />
+                      <Button type="primary" htmlType="submit" onClick={onFinish}>
+                        Submit
+                      </Button>
+                    </div>
+                  </Tabs.TabPane>
+                  <Tabs.TabPane
+                    tab={
+                      <span style={{ fontSize: 16 }}>
+                        <ThunderboltOutlined />
+                        Rule Actions
+                      </span>
+                    }
+                    key="2"
+                  >
+                    <div>AAAAA</div>
+                  </Tabs.TabPane>
+                </Tabs>
               </div>
               <Divider> Process Action </Divider>
             </>

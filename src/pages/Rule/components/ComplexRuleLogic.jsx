@@ -56,24 +56,6 @@ const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, on
     triggerChange(rleGroupsCopy);
   };
 
-  const onCodeChange = (e) => {
-    let newCodeValue = e.target.value;
-    ruleGroups.code = newCodeValue;
-    triggerChange(ruleGroups);
-  };
-
-  const onNameChange = (e) => {
-    let newValue = e.target.value;
-    ruleGroups.name = newValue;
-    triggerChange(ruleGroups);
-  };
-
-  const onDescriptionChange = (e) => {
-    let newValue = e.target.value;
-    ruleGroups.description = newValue;
-    triggerChange(ruleGroups);
-  };
-
   /////  calculate line position //////
   const calcNthPos = (groupIndex) => {
     let ele1 = document.getElementById('grp-base');
@@ -215,7 +197,7 @@ const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, on
 
   ////
   return (
-    <div className={styles.border_less_wrapper}>
+    <>
       <div>
         <Card
           title={
@@ -237,7 +219,7 @@ const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, on
           </Row>
         </Card>
       </div>
-    </div>
+    </>
   );
 };
 
