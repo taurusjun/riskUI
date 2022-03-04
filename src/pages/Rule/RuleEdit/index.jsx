@@ -174,8 +174,9 @@ export default (props) => {
                   </Row>
                 </Card>
               </div>
+              <Divider />
               <div className={styles.card_container}>
-                <Tabs type="card">
+                <Tabs type="card" defaultActiveKey="2">
                   <Tabs.TabPane
                     tab={
                       <span style={{ fontSize: 16 }}>
@@ -207,7 +208,40 @@ export default (props) => {
                     }
                     key="2"
                   >
-                    <div>AAAAA</div>
+                    <div style={{ width: 500 }}>
+                      <div>
+                        <div style={{ fontSize: 20, borderBottom: 'solid 1px' }}>
+                          Rule is <span style={{ color: 'red' }}>True</span>
+                        </div>
+                        <div style={{ padding: 10 }}>
+                          <div style={{ display: 'inline-block', marginRight: 30 }}>
+                            <div>Action</div>
+                            <Select defaultValue="Add tag" style={{ width: '100%' }}>
+                              <Select.Option value="jack">Jack</Select.Option>
+                            </Select>
+                          </div>
+                          <div style={{ display: 'inline-block' }}>
+                            <div>Value</div>
+                            <Select
+                              mode="multiple"
+                              allowClear
+                              style={{ width: '100%' }}
+                              placeholder="Please select"
+                              defaultValue={['highRisk', 'return']}
+                              // onChange={handleChange}
+                            >
+                              <Select.Option value="jack">Jack</Select.Option>
+                            </Select>
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ marginTop: 50 }}>
+                        <div style={{ fontSize: 20, borderBottom: 'solid 1px' }}>
+                          Rule is <span style={{ color: 'red' }}>False</span>
+                        </div>
+                        <div style={{ padding: 10 }}>No Actions</div>
+                      </div>
+                    </div>
                   </Tabs.TabPane>
                 </Tabs>
               </div>
