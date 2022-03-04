@@ -8,13 +8,8 @@ import styles from './index.less';
 import { keygenerator } from './Keygenerator';
 import { connectLines } from './DOMConnector';
 
-const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
-  const [rleGroups, setRleGroups] = useState(rule.ruleGroups);
-  const [rleProps, setRleProps] = useState({
-    name: rule.name,
-    code: rule.code,
-    description: rule.description,
-  });
+const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, onChange }) => {
+  const [rleGroups, setRleGroups] = useState(ruleGroups);
   const [posArray, setArray] = useState([]);
 
   const triggerChange = (changedValue) => {
@@ -26,27 +21,21 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
     let rleGroupsCopy = Object.assign([], rleGroups);
     rleGroupsCopy[index].ruleConditions = changedRuleConditions;
     setRleGroups(rleGroupsCopy);
-
-    rule.ruleGroups = rleGroupsCopy;
-    triggerChange(rule);
+    triggerChange(rleGroupsCopy);
   };
 
   const onRuleGroupDelete = (index) => {
     let rleGroupsCopy = Object.assign([], rleGroups);
     rleGroupsCopy.splice(index, 1);
     setRleGroups(rleGroupsCopy);
-
-    rule.ruleGroups = rleGroupsCopy;
-    triggerChange(rule);
+    triggerChange(rleGroupsCopy);
   };
 
   const onLogicChange = (index, changedLogic) => {
     let rleGroupsCopy = Object.assign([], rleGroups);
     rleGroupsCopy[index].logicCode = changedLogic;
     setRleGroups(rleGroupsCopy);
-
-    rule.ruleGroups = rleGroupsCopy;
-    triggerChange(rule);
+    triggerChange(rleGroupsCopy);
   };
 
   const addNewRuleGroup = (e) => {
@@ -64,27 +53,25 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
     let rleGroupsCopy = Object.assign([], rleGroups);
     rleGroupsCopy.push(newRuleGrp);
     setRleGroups(rleGroupsCopy);
-
-    rule.ruleGroups = rleGroupsCopy;
-    triggerChange(rule);
+    triggerChange(rleGroupsCopy);
   };
 
   const onCodeChange = (e) => {
     let newCodeValue = e.target.value;
-    rule.code = newCodeValue;
-    triggerChange(rule);
+    ruleGroups.code = newCodeValue;
+    triggerChange(ruleGroups);
   };
 
   const onNameChange = (e) => {
     let newValue = e.target.value;
-    rule.name = newValue;
-    triggerChange(rule);
+    ruleGroups.name = newValue;
+    triggerChange(ruleGroups);
   };
 
   const onDescriptionChange = (e) => {
     let newValue = e.target.value;
-    rule.description = newValue;
-    triggerChange(rule);
+    ruleGroups.description = newValue;
+    triggerChange(ruleGroups);
   };
 
   /////  calculate line position //////
@@ -229,77 +216,6 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
   ////
   return (
     <div className={styles.border_less_wrapper}>
-      <div style={{ marginBottom: 20 }}>
-        <Card title={<div>Rule Properties </div>} className={styles.card} bordered={false}>
-          <Row gutter={10}>
-            <Col>
-              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
-                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
-                  Code
-                </label>
-                <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
-                  <input
-                    name="ruleCode"
-                    key="ruleCode"
-                    defaultValue={rleProps.code}
-                    onChange={onCodeChange}
-                  />
-                </div>
-              </div>
-            </Col>
-            <Col>
-              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
-                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
-                  Name
-                </label>
-                <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
-                  <input
-                    name="ruleName"
-                    key="ruleName"
-                    defaultValue={rleProps.name}
-                    onChange={onNameChange}
-                  />
-                </div>
-              </div>
-            </Col>
-            <Col span={12}>
-              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
-                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
-                  Description
-                </label>
-                <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
-                  <input
-                    name="ruleDescription"
-                    key="ruleDescription"
-                    style={{ width: 400 }}
-                    defaultValue={rule.description}
-                    onChange={onDescriptionChange}
-                  />
-                </div>
-              </div>
-            </Col>
-          </Row>
-          <Row gutter={10}>
-            <Col span={24}>
-              <div style={{ paddingLeft: 25, paddingRight: 12 }}>
-                <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
-                  Apply to Events:
-                </label>
-                <div style={{ display: 'inline-block', padding: 10, fontSize: 16, width: '50%' }}>
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: '100%' }}
-                    placeholder="Please select"
-                    defaultValue={['payment', 'return']}
-                    // onChange={handleChange}
-                  ></Select>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Card>
-      </div>
       <div>
         <Card
           title={
@@ -325,4 +241,4 @@ const Rule = ({ variables, operators, logicOps, rule, onChange }) => {
   );
 };
 
-export default Rule;
+export default ComplexRuleLogic;

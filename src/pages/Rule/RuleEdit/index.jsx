@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Select, Input, Form, Spin, Card, Col, Popover, Row, message, Button, Divider } from 'antd';
 import styles from './index.less';
-import Rule from '../components/Rule';
+import ComplexRuleLogic from '../components/ComplexRuleLogic';
 import { useForceUpdate } from '../components/useForceUpdate';
 import { keygenerator } from '../components/Keygenerator';
 import { ruleEditPageInfo, rulechange } from '../service';
@@ -38,13 +38,31 @@ export default (props) => {
   const logicOps = new Map(Object.entries(logicOpsJson));
   ///////
 
-  const onRuleChange = (changedRule) => {
-    console.log('rule:');
-    console.log(rule);
-    console.log('changedRule:');
-    console.log(changedRule);
-    // setRule({ ...changedRule });
+  const onRuleGroupsChange = (changedRuleGroups) => {
+    // console.log('rule:');
+    // console.log(rule);
+    // console.log('changedRule:');
+    // console.log(changedRuleGroups);
+    rule.ruleGroups = changedRuleGroups;
   };
+
+  ////////
+  const onCodeChange = (e) => {
+    let newCodeValue = e.target.value;
+    rule.code = newCodeValue;
+  };
+
+  const onNameChange = (e) => {
+    let newValue = e.target.value;
+    rule.name = newValue;
+  };
+
+  const onDescriptionChange = (e) => {
+    let newValue = e.target.value;
+    rule.description = newValue;
+  };
+
+  ///////
 
   const onFinish = async () => {
     try {
@@ -59,13 +77,91 @@ export default (props) => {
         <Spin spinning={loading} size="large" delay={300}>
           {!loading && (
             <>
+              <div style={{ marginBottom: 20 }}>
+                <Card title={<div>Base Info </div>} className={styles.card} bordered={false}>
+                  <Row gutter={10}>
+                    <Col>
+                      <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                        <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                          Code
+                        </label>
+                        <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
+                          <input
+                            name="ruleCode"
+                            key="ruleCode"
+                            defaultValue={rule.code}
+                            onChange={onCodeChange}
+                          />
+                        </div>
+                      </div>
+                    </Col>
+                    <Col>
+                      <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                        <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                          Name
+                        </label>
+                        <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
+                          <input
+                            name="ruleName"
+                            key="ruleName"
+                            defaultValue={rule.name}
+                            onChange={onNameChange}
+                          />
+                        </div>
+                      </div>
+                    </Col>
+                    <Col span={12}>
+                      <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                        <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                          Description
+                        </label>
+                        <div style={{ display: 'inline-block', padding: 10, fontSize: 16 }}>
+                          <input
+                            name="ruleDescription"
+                            key="ruleDescription"
+                            style={{ width: 400 }}
+                            defaultValue={rule.description}
+                            onChange={onDescriptionChange}
+                          />
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row gutter={10}>
+                    <Col span={24}>
+                      <div style={{ paddingLeft: 25, paddingRight: 12 }}>
+                        <label style={{ display: 'inline-block', fontSize: 16, fontWeight: 500 }}>
+                          Apply to Events:
+                        </label>
+                        <div
+                          style={{
+                            display: 'inline-block',
+                            padding: 10,
+                            fontSize: 16,
+                            width: '50%',
+                          }}
+                        >
+                          <Select
+                            mode="multiple"
+                            allowClear
+                            style={{ width: '100%' }}
+                            placeholder="Please select"
+                            defaultValue={['payment', 'return']}
+                            // onChange={handleChange}
+                          ></Select>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </Card>
+              </div>
               <div>
-                <Rule
+                <ComplexRuleLogic
                   variables={data.variablesArray}
                   operators={data.operatorsArray}
                   logicOps={logicOps}
-                  rule={rule}
-                  onChange={onRuleChange}
+                  rule={rule.ruleGroups}
+                  onChange={onRuleGroupsChange}
                 />
                 <Button type="primary" htmlType="submit" onClick={onFinish}>
                   Submit
