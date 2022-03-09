@@ -41,6 +41,7 @@ export default (props) => {
   } = useRequest(() => ruleEditPageInfo({ uuid: ruleUUID }));
 
   const ruleLogic = loading ? {} : data.ruleLogic;
+  const ruleAction = loading ? {} : data.ruleAction;
   // const [rule, setRule] = useState(loading ? {} : data.rule);
   const ruleGroups = loading ? [] : ruleLogic.ruleGroups;
   //add '_key' property for all element
@@ -91,11 +92,28 @@ export default (props) => {
   };
 
   ///////
+  const onRuleIsTrueActionChange = (changedTrueActions) => {
+    ruleAction.ruleIsTrueActions = changedTrueActions;
+  };
 
-  const onFinish = async () => {
+  const onRuleIsFalseActionChange = (changedFalseActions) => {
+    ruleAction.ruleIsFalseActions = changedFalseActions;
+  };
+
+  //////
+
+  const onRuleLogicSubmit = async () => {
     try {
       await rulechange(ruleLogic);
       run();
+    } catch (error) {}
+  };
+
+  const onRuleActionSubmit = async () => {
+    console.log(ruleAction);
+    try {
+      // await rulechange(ruleLogic);
+      // run();
     } catch (error) {}
   };
 
@@ -206,7 +224,7 @@ export default (props) => {
                         rule={ruleLogic.ruleGroups}
                         onChange={onRuleGroupsChange}
                       />
-                      <Button type="primary" htmlType="submit" onClick={onFinish}>
+                      <Button type="primary" htmlType="submit" onClick={onRuleLogicSubmit}>
                         Submit
                       </Button>
                     </div>
@@ -234,9 +252,10 @@ export default (props) => {
                         </div>
                         <div style={{ padding: 10, width: 800 }}>
                           <RuleAction
-                            ruleActionArray={data.ruleAction.ruleIsTrueActions}
+                            ruleActionArray={ruleAction.ruleIsTrueActions}
                             actionDefs={data.actionDefs}
                             tagDict={data.tagDict}
+                            onChange={onRuleIsTrueActionChange}
                           />
                         </div>
                       </div>
@@ -253,12 +272,18 @@ export default (props) => {
                         </div>
                         <div style={{ padding: 10, width: 800 }}>
                           <RuleAction
-                            ruleActionArray={data.ruleAction.ruleIsFalseActions}
+                            ruleActionArray={ruleAction.ruleIsFalseActions}
                             actionDefs={data.actionDefs}
                             tagDict={data.tagDict}
+                            onChange={onRuleIsFalseActionChange}
                           />
                         </div>
                       </div>
+                    </div>
+                    <div>
+                      <Button type="primary" htmlType="submit" onClick={onRuleActionSubmit}>
+                        Action Submit
+                      </Button>
                     </div>
                   </Tabs.TabPane>
                 </Tabs>

@@ -60,7 +60,7 @@ export async function operatorDict(params, options) {
 /** 规则 POST /api/rule */
 
 export async function rulechange(data, options) {
-  return request('/api/rulechange', {
+  return request('/rule/logicUpdate', {
     // return request('http://127.0.0.1:8080/crudwebservice/rulechange', {
     data,
     method: 'POST',

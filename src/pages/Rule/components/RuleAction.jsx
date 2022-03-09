@@ -10,20 +10,36 @@ const RuleAction = ({ ruleActionArray, actionDefs, tagDict, onChange }) => {
     onChange?.(changedValue);
   };
 
-  const onInputParamsChange = (action, paramList) => {
-    console.log(paramList);
+  const onActionChange = (action, index) => {
+    let actionsCopy = [...actions];
+    actionsCopy[index].actionCode = action;
+    setActions(actionsCopy);
+
+    triggerChange(actionsCopy);
+  };
+
+  const onInputParamsChange = (value, index) => {
+    let actionsCopy = [...actions];
+    actionsCopy[index].paramsValue = JSON.stringify(value);
+    setActions(actionsCopy);
+
+    triggerChange(actionsCopy);
   };
 
   const addNewActionRow = (e, index) => {
     let actionsCopy = [...actions];
-    actionsCopy.splice(index, 0, 9);
+    actionsCopy.splice(index + 1, 0, {});
     setActions(actionsCopy);
+
+    triggerChange(actionsCopy);
   };
 
   const deleteActionRow = (e, index) => {
     let actionsCopy = [...actions];
     actionsCopy.splice(index, 1);
     setActions(actionsCopy);
+
+    triggerChange(actionsCopy);
   };
 
   //////  actionOptions //////
@@ -46,7 +62,20 @@ const RuleAction = ({ ruleActionArray, actionDefs, tagDict, onChange }) => {
 
   return (
     <>
-      {actions.length == 0 && <div style={{ padding: 10 }}>No Actions</div>}
+      {actions.length == 0 && (
+        <div style={{ padding: 10 }}>
+          <div style={{ display: 'inline-block', marginRight: 2 }}>
+            <Button
+              type="primary"
+              shape="circle"
+              size="small"
+              icon={<PlusOutlined />}
+              onClick={(e) => addNewActionRow(e, -1)}
+            />
+          </div>
+          No Actions
+        </div>
+      )}
       {actions.length > 0 && (
         <Row gutter={16}>
           <Col span={6}>
@@ -58,7 +87,7 @@ const RuleAction = ({ ruleActionArray, actionDefs, tagDict, onChange }) => {
         </Row>
       )}
       {actions.map((ac, index) => (
-        <Row gutter={16} style={{ marginTop: 10 }}>
+        <Row gutter={16} style={{ marginTop: 10 }} key={ac.uuid}>
           <Col span={2}>
             <div style={{ display: 'inline-block', marginRight: 2 }}>
               <Button
@@ -82,25 +111,36 @@ const RuleAction = ({ ruleActionArray, actionDefs, tagDict, onChange }) => {
           <Col span={6}>
             <div>
               <Select
-                key={ac.actionCode + '_' + index + 'ac'}
-                defaultValue={actionOptionsMap.get(ac.actionCode).name}
+                defaultValue={ac.actionCode && actionOptionsMap.get(ac.actionCode).name}
                 style={{ width: '100%' }}
                 options={actionOptions}
+                onChange={(val) => onActionChange(val, index)}
               />
             </div>
           </Col>
           <Col span={8}>
             <div>
-              <Select
-                key={ac.actionCode + '_' + index + 'params'}
-                mode="multiple"
-                allowClear
-                style={{ width: 300 }}
-                placeholder="Please select"
-                defaultValue={JSON.parse(ac.paramsValue)}
-                options={tagOptions}
-                onChange={(val) => onInputParamsChange(ac.actionCode, val)}
-              />
+              {ac.actionCode && actionOptionsMap.get(ac.actionCode).paramsType == 'List' && (
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: 300 }}
+                  placeholder="Please select"
+                  defaultValue={ac.paramsValue && JSON.parse(ac.paramsValue)}
+                  options={tagOptions}
+                  onChange={(val) => onInputParamsChange(val, index)}
+                />
+              )}
+              {ac.actionCode && actionOptionsMap.get(ac.actionCode).paramsType == 'String' && (
+                <Input
+                  mode="multiple"
+                  allowClear
+                  style={{ width: 300 }}
+                  placeholder="Please input"
+                  defaultValue={ac.paramsValue}
+                  onChange={(e) => onInputParamsChange(e.target.value, index)}
+                />
+              )}
             </div>
           </Col>
         </Row>

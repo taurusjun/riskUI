@@ -217,6 +217,7 @@ function getRuleEditInfo(req, res, u) {
 
   const actionDefs = [];
   actionDefs[0] = { id: 1, code: 'addTag', name: '加入标签', paramsType: 'List' };
+  actionDefs[1] = { id: 2, code: 'addPath', name: '添加偏差值', paramsType: 'String' };
 
   const variablesArray = [
     {
