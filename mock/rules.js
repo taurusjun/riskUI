@@ -197,6 +197,27 @@ function getRuleEditInfo(req, res, u) {
     ],
   };
 
+  const actions1 = {
+    uuid: '66243293-43d3-4af4-a9d9-026abb5af9ae',
+    actionCode: 'addTag',
+    paramsValue: '["highRisk","ATO"]',
+    extraMap: null,
+  };
+
+  const ruleActions = [];
+  ruleActions[0] = actions1;
+  // resultActions[1] = actions2;
+  // resultActions[2] = actions2;
+
+  const ruleAction = {
+    uuid: '96668402-87fc-11ec-a8a3-0242ac120002',
+    ruleIsTrueActions: ruleActions,
+    ruleIsFalseActions: [],
+  };
+
+  const actionDefs = [];
+  actionDefs[0] = { id: 1, code: 'addTag', name: '加入标签', paramsType: 'List' };
+
   const variablesArray = [
     {
       id: 1,
@@ -245,8 +266,17 @@ function getRuleEditInfo(req, res, u) {
     },
   ];
 
+  const tagDict = [
+    { id: 1, code: 'highRisk', description: '高风险' },
+    { id: 2, code: 'ATO', description: '账号被盗风险' },
+    { id: 3, code: 'safeEnv', description: '安全环境' },
+  ];
+
   const result = {
-    rule: rule,
+    ruleLogic: rule,
+    ruleAction: ruleAction,
+    actionDefs: actionDefs,
+    tagDict: tagDict,
     variablesArray: variablesArray,
     operatorsArray: operatorsArray,
   };
@@ -296,7 +326,7 @@ function getAllRules(req, res, u) {
   });
 }
 
-function getRuleActions(req, res, u) {
+function getRuleWithActions(req, res, u) {
   let realUrl = u;
 
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
@@ -307,45 +337,55 @@ function getRuleActions(req, res, u) {
   const params = parse(realUrl, true).query;
 
   const actions1 = {
-    uuid: '123232-87fc-11ec-a8a3-0242ac120002',
-    name: 'AddTag',
-    code: 'addTag',
-    description: 'add tags to the events',
-    input: {
-      type: 'multipleSelect',
-      value: ['highRisk', 'noRisk'],
-    },
+    uuid: '66243293-43d3-4af4-a9d9-026abb5af9ae',
+    actionCode: 'addTag',
+    paramsValue: '[\\"highRisk\\",\\"ATO\\"]',
+    extraMap: null,
   };
 
-  const actions2 = {
-    uuid: '666121-87fc-11ec-a8a3-0242ac120002',
-    name: 'AddFraudType',
-    code: 'addFraudType',
-    description: 'add fraud types to the events',
-    input: {
-      type: 'singleSelect',
-      value: ['ato', 'dto'],
-    },
+  // const actions2 = {
+  //   uuid: '666121-87fc-11ec-a8a3-0242ac120002',
+  //   name: 'AddFraudType',
+  //   code: 'addFraudType',
+  //   description: 'add fraud types to the events',
+  //   input: {
+  //     type: 'singleSelect',
+  //     value: ['ato', 'dto'],
+  //   },
+  // };
+
+  // const actions3 = {
+  //   uuid: '658968496-87fc-11ec-a8a3-0242ac120002',
+  //   name: 'AddPath',
+  //   code: 'addPath',
+  //   description: 'add path to the events',
+  //   input: {
+  //     type: 'input',
+  //     value: '',
+  //   },
+  // };
+
+  const ruleActions = [];
+  ruleActions[0] = actions1;
+  // resultActions[1] = actions2;
+  // resultActions[2] = actions2;
+
+  const ruleWithActions = {
+    uuid: '96668402-87fc-11ec-a8a3-0242ac120002',
+    ruleIsTrueActions: ruleActions,
+    ruleIsFalseActions: [],
   };
 
-  const actions3 = {
-    uuid: '658968496-87fc-11ec-a8a3-0242ac120002',
-    name: 'AddPath',
-    code: 'addPath',
-    description: 'add path to the events',
-    input: {
-      type: 'input',
-      value: '',
-    },
-  };
+  const actionDefs = [];
+  actionDefs[0] = { id: 1, code: 'addTag', name: '加入标签', paramsType: 'List' };
 
-  const resultActions = [];
-  resultActions[0] = actions1;
-  resultActions[1] = actions2;
-  resultActions[2] = actions2;
+  const result = {
+    ruleWithActions: ruleWithActions,
+    actionDefs: actionDefs,
+  };
 
   return res.json({
-    data: resultActions,
+    data: result,
     total: 10,
     success: true,
     pageSize: 10,
@@ -354,9 +394,9 @@ function getRuleActions(req, res, u) {
 }
 
 export default {
-  'GET /api/ruleactionlist': getRuleActions,
-  'GET /api/rulelist': getAllRules,
-  'GET /api/ruleedit': getRuleEditInfo,
+  'GET /RulePage/action': getRuleWithActions,
+  'GET /RulePage/rule': getRuleEditInfo,
+  'GET /RulePage/list': getAllRules,
   'GET /api/rulequery': getRulequery,
   'GET /api/variables': variableDict,
   'GET /api/operators': operatorDict,

@@ -26,22 +26,23 @@ import ComplexRuleLogic from '../components/ComplexRuleLogic';
 import RuleAction from '../components/RuleAction';
 import { useForceUpdate } from '../components/useForceUpdate';
 import { keygenerator } from '../components/Keygenerator';
-import { ruleEditPageInfo, rulechange } from '../service';
+import { ruleEditPageInfo, rulechange, ruleEditPageAction } from '../service';
 import { useRequest } from 'umi';
 import { useParams } from 'umi';
 
 export default (props) => {
   const params = useParams();
+  const ruleUUID = params.uuid;
   const {
     error,
     loading,
     run,
     data: data,
-  } = useRequest(() => ruleEditPageInfo({ uuid: params.uuid }));
+  } = useRequest(() => ruleEditPageInfo({ uuid: ruleUUID }));
 
-  const rule = loading ? {} : data.rule;
+  const ruleLogic = loading ? {} : data.ruleLogic;
   // const [rule, setRule] = useState(loading ? {} : data.rule);
-  const ruleGroups = loading ? [] : rule.ruleGroups;
+  const ruleGroups = loading ? [] : ruleLogic.ruleGroups;
   //add '_key' property for all element
   //'_key' would be used in component 'key' property
   ruleGroups?.forEach((group) => {
@@ -59,30 +60,41 @@ export default (props) => {
   ///////
 
   const onRuleGroupsChange = (changedRuleGroups) => {
-    rule.ruleGroups = changedRuleGroups;
+    ruleLogic.ruleGroups = changedRuleGroups;
   };
 
   ////////
   const onCodeChange = (e) => {
     let newCodeValue = e.target.value;
-    rule.code = newCodeValue;
+    ruleLogic.code = newCodeValue;
   };
 
   const onNameChange = (e) => {
     let newValue = e.target.value;
-    rule.name = newValue;
+    ruleLogic.name = newValue;
   };
 
   const onDescriptionChange = (e) => {
     let newValue = e.target.value;
-    rule.description = newValue;
+    ruleLogic.description = newValue;
+  };
+
+  ////
+  const onTabChange = async (activeKey) => {
+    if (activeKey == '2') {
+      console.log(activeKey);
+      // try {
+      //   const { data } = await ruleEditPageAction({ uuid: ruleUUID });
+      //   console.log(data);
+      // } catch (error) {}
+    }
   };
 
   ///////
 
   const onFinish = async () => {
     try {
-      await rulechange(rule);
+      await rulechange(ruleLogic);
       run();
     } catch (error) {}
   };
@@ -108,7 +120,7 @@ export default (props) => {
                           <input
                             name="ruleCode"
                             key="ruleCode"
-                            defaultValue={rule.code}
+                            defaultValue={ruleLogic.code}
                             onChange={onCodeChange}
                           />
                         </div>
@@ -123,7 +135,7 @@ export default (props) => {
                           <input
                             name="ruleName"
                             key="ruleName"
-                            defaultValue={rule.name}
+                            defaultValue={ruleLogic.name}
                             onChange={onNameChange}
                           />
                         </div>
@@ -139,7 +151,7 @@ export default (props) => {
                             name="ruleDescription"
                             key="ruleDescription"
                             style={{ width: 400 }}
-                            defaultValue={rule.description}
+                            defaultValue={ruleLogic.description}
                             onChange={onDescriptionChange}
                           />
                         </div>
@@ -176,7 +188,7 @@ export default (props) => {
               </div>
               <Divider />
               <div className={styles.card_container}>
-                <Tabs type="card" defaultActiveKey="2">
+                <Tabs type="card" defaultActiveKey="1" onChange={onTabChange}>
                   <Tabs.TabPane
                     tab={
                       <span style={{ fontSize: 16 }}>
@@ -191,7 +203,7 @@ export default (props) => {
                         variables={data.variablesArray}
                         operators={data.operatorsArray}
                         logicOps={logicOps}
-                        rule={rule.ruleGroups}
+                        rule={ruleLogic.ruleGroups}
                         onChange={onRuleGroupsChange}
                       />
                       <Button type="primary" htmlType="submit" onClick={onFinish}>
@@ -221,7 +233,11 @@ export default (props) => {
                           Rule is <span style={{ color: 'red' }}>True</span>
                         </div>
                         <div style={{ padding: 10, width: 800 }}>
-                          <RuleAction actionOpts={actionOpts} />
+                          <RuleAction
+                            ruleActionArray={data.ruleAction.ruleIsTrueActions}
+                            actionDefs={data.actionDefs}
+                            tagDict={data.tagDict}
+                          />
                         </div>
                       </div>
                       <div style={{ marginTop: 50 }}>
@@ -236,7 +252,11 @@ export default (props) => {
                           Rule is <span style={{ color: 'red' }}>False</span>
                         </div>
                         <div style={{ padding: 10, width: 800 }}>
-                          <RuleAction actionOpts={actionOpts} />
+                          <RuleAction
+                            ruleActionArray={data.ruleAction.ruleIsFalseActions}
+                            actionDefs={data.actionDefs}
+                            tagDict={data.tagDict}
+                          />
                         </div>
                       </div>
                     </div>
