@@ -9,7 +9,7 @@
 export default {
   dev: {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
-    '/api/': {
+    '/RulePage/': {
       // 要代理的地址
       // target: 'https://preview.pro.ant.design',
       target: 'http://127.0.0.1:8080',
