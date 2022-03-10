@@ -26,7 +26,7 @@ import ComplexRuleLogic from '../components/ComplexRuleLogic';
 import RuleAction from '../components/RuleAction';
 import { useForceUpdate } from '../components/useForceUpdate';
 import { keygenerator } from '../components/Keygenerator';
-import { ruleEditPageInfo, rulechange, ruleEditPageAction } from '../service';
+import { ruleEditPageInfo, ruleLogicUpdate, ruleActionUpdate } from '../service';
 import { useRequest } from 'umi';
 import { useParams } from 'umi';
 
@@ -104,7 +104,7 @@ export default (props) => {
 
   const onRuleLogicSubmit = async () => {
     try {
-      await rulechange(ruleLogic);
+      await ruleLogicUpdate(ruleLogic);
       run();
     } catch (error) {}
   };
@@ -112,8 +112,8 @@ export default (props) => {
   const onRuleActionSubmit = async () => {
     console.log(ruleAction);
     try {
-      // await rulechange(ruleLogic);
-      // run();
+      await ruleActionUpdate(ruleAction);
+      run();
     } catch (error) {}
   };
 
