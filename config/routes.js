@@ -25,6 +25,21 @@ export default [
     ],
   },
   {
+    path: '/Strategy',
+    name: 'Strategy',
+    icon: 'smile',
+    routes: [
+      {
+        name: 'Graph',
+        path: '/Strategy/Graph',
+        component: './Strategy/Graph',
+      },
+      {
+        component: './404',
+      },
+    ],
+  },
+  {
     path: '/user',
     layout: false,
     routes: [

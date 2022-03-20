@@ -223,6 +223,23 @@ export function getRoutes() {
         ]
       },
       {
+        "path": "/Strategy",
+        "name": "Strategy",
+        "icon": "smile",
+        "routes": [
+          {
+            "name": "Graph",
+            "path": "/Strategy/Graph",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Strategy__Graph' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Strategy/Graph'), loading: LoadingComponent}),
+            "exact": true
+          },
+          {
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/Users/juwang1/PG/test/my/riskUI/src/pages/404'), loading: LoadingComponent}),
+            "exact": true
+          }
+        ]
+      },
+      {
         "path": "/user",
         "layout": false,
         "routes": [
