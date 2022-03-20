@@ -11,6 +11,9 @@ const StrategyGraph = () => {
       id: 'common_node_001',
     },
     {
+      id: 'common_node_0011',
+    },
+    {
       id: 'result_node_001',
     },
     {
@@ -28,6 +31,40 @@ const StrategyGraph = () => {
   ];
 
   const edges = [
+    {
+      source: 'start_node_001',
+      target: 'common_node_0011',
+      style: {
+        label: {
+          value: 'Any',
+        },
+      },
+    },
+    {
+      source: 'common_node_0011',
+      target: 'result_node_001',
+      style: {
+        label: {
+          value: 'Yes',
+        },
+        keyshape: {
+          lineDash: [4, 4],
+        },
+      },
+    },
+    {
+      source: 'common_node_0011',
+      target: 'start_node_002',
+      style: {
+        label: {
+          value: 'No',
+        },
+        keyshape: {
+          lineDash: [4, 4],
+          stroke: 'red',
+        },
+      },
+    },
     {
       source: 'start_node_001',
       target: 'common_node_001',
