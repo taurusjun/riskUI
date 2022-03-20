@@ -5,6 +5,15 @@ import { Row, Col } from 'antd';
 const StrategyGraph = () => {
   const nodes = [
     {
+      id: 'start_node_001',
+    },
+    {
+      id: 'common_node_001',
+    },
+    {
+      id: 'result_node_001',
+    },
+    {
       id: 'start_node_002',
     },
     {
@@ -19,6 +28,40 @@ const StrategyGraph = () => {
   ];
 
   const edges = [
+    {
+      source: 'start_node_001',
+      target: 'common_node_001',
+      style: {
+        label: {
+          value: 'Any',
+        },
+      },
+    },
+    {
+      source: 'common_node_001',
+      target: 'result_node_001',
+      style: {
+        label: {
+          value: 'Yes',
+        },
+        keyshape: {
+          lineDash: [4, 4],
+        },
+      },
+    },
+    {
+      source: 'common_node_001',
+      target: 'start_node_002',
+      style: {
+        label: {
+          value: 'No',
+        },
+        keyshape: {
+          lineDash: [4, 4],
+          stroke: 'red',
+        },
+      },
+    },
     {
       source: 'start_node_002',
       target: 'common_node_002',
