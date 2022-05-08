@@ -11,3 +11,12 @@ export async function strategyNodeGraph(params, options) {
     ...(options || {}),
   });
 }
+
+/** 获取策略全图列表 GET /StrategyPage/graph */
+export async function strategyNodeDetail(params, options) {
+  return request('/StrategyPage/strategy', {
+    method: 'GET',
+    params: { ...params },
+    ...(options || {}),
+  });
+}

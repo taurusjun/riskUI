@@ -3,6 +3,7 @@ import Graphin, { Utils, GraphinTreeData } from '@antv/graphin';
 import { Row, Col, Spin } from 'antd';
 import { strategyNodeGraph } from '../service';
 import { useRequest } from 'umi';
+import { convertEdges2Graph } from '../components/GraphUtils';
 
 const StrategyGraph = () => {
   const { error, loading, run, data: data } = useRequest(() => strategyNodeGraph());
@@ -15,49 +16,7 @@ const StrategyGraph = () => {
   let graphData = {};
 
   if (!loading) {
-    const nodeMap = new Map(Object.entries(strategyNodesEdges));
-    const nodeList = nodeMap.keys().reduce(
-      (ac, item) => [
-        ...ac,
-        {
-          id: item,
-          style: {
-            label: {
-              value: item,
-            },
-            type: 'graphin-circle',
-          },
-        },
-      ],
-      [],
-    );
-
-    const nodeConnectionArray = nodeMap.reduce((arr, val) => [...arr, ...val], []);
-    const nodeEdges = nodeConnectionArray.reduce((arr, item) => {
-      let color = 'black'; //default color
-      if (item.logic == 'N') color = 'red';
-      if (item.logic == 'Y') color = 'blue';
-
-      let temp = [
-        ...arr,
-        {
-          source: item.fromNode.code,
-          target: item.toNode.code,
-          style: {
-            label: {
-              value: item.logic,
-            },
-            keyshape: {
-              lineDash: [4, 4],
-              stroke: color,
-            },
-          },
-        },
-      ];
-      return temp;
-    }, []);
-
-    graphData = { nodes: nodeList, edges: nodeEdges };
+    graphData = convertEdges2Graph(strategyNodesEdges);
   }
 
   console.log(graphData);

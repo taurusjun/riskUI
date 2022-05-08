@@ -35,6 +35,11 @@ export default [
         component: './Strategy/Graph',
       },
       {
+        name: 'StrategyDetail',
+        path: '/Strategy/StrategyDetail/:uuid',
+        component: './Strategy/StrategyDetail',
+      },
+      {
         component: './404',
       },
     ],

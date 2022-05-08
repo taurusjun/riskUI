@@ -206,6 +206,102 @@ function getStrategyGraph(req, res, u) {
   });
 }
 
+function getStrategyDetail(req, res, u) {
+  let realUrl = u;
+
+  if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
+    realUrl = req.url;
+  }
+
+  const { current = 1, pageSize = 10 } = req.query;
+  const params = parse(realUrl, true).query;
+
+  const result = {
+    id: 2,
+    uuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+    code: 'strategy_002',
+    description: '',
+    strategyNodeGraphVO: {
+      startNode: {
+        uuid: '62f420fb-02e7-47c7-803a-6f4b51f34c01',
+        code: 'start_node_002',
+        description: '',
+        type: 'start',
+        strategyUuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+      },
+      connectVOMap: {
+        start_node_002: [
+          {
+            fromNode: {
+              uuid: '62f420fb-02e7-47c7-803a-6f4b51f34c01',
+              code: 'start_node_002',
+              description: '',
+              type: 'start',
+              strategyUuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+            },
+            toNode: {
+              uuid: '8bce9a9a-e6ce-4cd6-8bbc-1057f6f3ffdf',
+              code: 'common_node_002',
+              description: '',
+              type: 'common',
+              strategyUuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+            },
+            logic: 'Any',
+          },
+        ],
+        common_node_002: [
+          {
+            fromNode: {
+              uuid: '8bce9a9a-e6ce-4cd6-8bbc-1057f6f3ffdf',
+              code: 'common_node_002',
+              description: '',
+              type: 'common',
+              strategyUuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+            },
+            toNode: {
+              uuid: 'e289d258-4a07-404a-b65e-3ca99ab6513c',
+              code: 'result_node_0021',
+              description: '',
+              type: 'result',
+              strategyUuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+            },
+            logic: 'Y',
+          },
+          {
+            fromNode: {
+              uuid: '8bce9a9a-e6ce-4cd6-8bbc-1057f6f3ffdf',
+              code: 'common_node_002',
+              description: '',
+              type: 'common',
+              strategyUuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+            },
+            toNode: {
+              uuid: '48768ba8-e1a3-4558-a0b0-a7fc7a7e0923',
+              code: 'result_node_0022',
+              description: '',
+              type: 'result',
+              strategyUuid: 'dc564013-5f16-4ff6-84ed-41f56c1bcaed',
+            },
+            logic: 'N',
+          },
+        ],
+        result_node_0021: [],
+        result_node_0022: [],
+      },
+    },
+  };
+
+  return res.json({
+    data: result,
+    total: 10,
+    success: true,
+    code: 'OK',
+    pageSize: 10,
+    current: 1,
+  });
+}
+
 export default {
   'GET /StrategyPage/graph': getStrategyGraph,
+  'GET /StrategyPage/strategy': getStrategyDetail,
 };

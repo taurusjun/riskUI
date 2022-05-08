@@ -234,6 +234,12 @@ export function getRoutes() {
             "exact": true
           },
           {
+            "name": "StrategyDetail",
+            "path": "/Strategy/StrategyDetail/:uuid",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Strategy__StrategyDetail' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Strategy/StrategyDetail'), loading: LoadingComponent}),
+            "exact": true
+          },
+          {
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/Users/juwang1/PG/test/my/riskUI/src/pages/404'), loading: LoadingComponent}),
             "exact": true
           }
