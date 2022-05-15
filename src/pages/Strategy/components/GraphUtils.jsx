@@ -1,4 +1,28 @@
 import { now } from 'lodash';
+import { Util } from '@antv/g6';
+
+const subjectColors = [
+  '#3D76DD',
+  '#19A576',
+  '#65789B',
+  '#B98700',
+  '#5349E0',
+  '#5AB8DB',
+  '#7B48A1',
+  '#D77622',
+  '#008685',
+  '#D37099',
+];
+const darkBackColor = 'rgb(43, 47, 51)';
+const disableColor = '#777';
+const theme = 'dark';
+
+export const colorSets = Util.getColorSetsBySubjectColors(
+  subjectColors,
+  darkBackColor,
+  theme,
+  disableColor,
+);
 
 export const convertEdges2Graph = (strategyNodesEdges) => {
   const nodeMap = new Map(Object.entries(strategyNodesEdges));

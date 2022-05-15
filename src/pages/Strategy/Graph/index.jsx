@@ -1,9 +1,14 @@
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import Graphin, { Utils, GraphinTreeData } from '@antv/graphin';
-import { Row, Col, Spin } from 'antd';
+import Graphin, { IG6GraphEvent, Utils, GraphinData, GraphinContext } from '@antv/graphin';
+import { Row, Col, Spin, message } from 'antd';
 import { strategyNodeGraph } from '../service';
 import { useRequest } from 'umi';
+import { useContext, useEffect } from 'react';
 import { convertEdges2Graph } from '../components/GraphUtils';
+import { colorSets } from '../components/GraphUtils';
+import '../components/graphinRegisterShape';
+// import '../components/graphinEvents';
+import { StrategyGraphBehavior } from '../components';
 
 const StrategyGraph = () => {
   const { error, loading, run, data: data } = useRequest(() => strategyNodeGraph());
@@ -21,6 +26,8 @@ const StrategyGraph = () => {
 
   console.log(graphData);
 
+  /////////   test data -start ////////
+  // const loading = false;
   // const nodes = [
   //   {
   //     id: 'start_node_001',
@@ -153,10 +160,24 @@ const StrategyGraph = () => {
   //   },
   // ];
 
+  // nodes.forEach((node) => {
+  //   node.type = 'myshape';
+  //   node.label = node.id;
+  //   node.style = {
+  //     stroke: '#72CC4A',
+  //     width: 150,
+  //   };
+  // });
+
   // nodes.map((node, index) => {
   //   node.style = {
+  //     keyshape: {
+  //       stroke: 'red',
+  //       // fill: 'red',
+  //     },
   //     label: {
   //       value: node.id,
+  //       fill: 'blue',
   //     },
   //     type: 'graphin-circle',
   //   };
@@ -166,8 +187,9 @@ const StrategyGraph = () => {
   //   var egdeStyle = edge.style;
   // });
 
-  // const data2 = { nodes, edges };
-  // console.log(data2);
+  // graphData = { nodes, edges };
+  // console.log(graphData);
+  /////////   test data -end ////////
 
   return (
     <Spin spinning={loading} size="large" delay={300}>
@@ -186,7 +208,9 @@ const StrategyGraph = () => {
                   layout={{ type: 'dagre', rankdir: 'LR' }}
                   // layout={{ type: 'compactBox' }}
                   // layout={{ type: 'concentric' }}
-                />
+                >
+                  <StrategyGraphBehavior />
+                </Graphin>
               </Col>
             </Row>
           </div>

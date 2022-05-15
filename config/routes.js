@@ -40,6 +40,11 @@ export default [
         component: './Strategy/StrategyDetail',
       },
       {
+        name: 'Playgroud',
+        path: '/Strategy/Playgroud',
+        component: './Strategy/Playgroud',
+      },
+      {
         component: './404',
       },
     ],

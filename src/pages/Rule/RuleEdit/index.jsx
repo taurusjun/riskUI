@@ -197,7 +197,7 @@ export default (props) => {
                             placeholder="Please select"
                             defaultValue={['payment', 'return']}
                             // onChange={handleChange}
-                          ></Select>
+                          />
                         </div>
                       </div>
                     </Col>

@@ -240,6 +240,12 @@ export function getRoutes() {
             "exact": true
           },
           {
+            "name": "Playgroud",
+            "path": "/Strategy/Playgroud",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Strategy__Playgroud' */'/Users/juwang1/PG/test/my/riskUI/src/pages/Strategy/Playgroud'), loading: LoadingComponent}),
+            "exact": true
+          },
+          {
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/Users/juwang1/PG/test/my/riskUI/src/pages/404'), loading: LoadingComponent}),
             "exact": true
           }
