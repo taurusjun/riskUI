@@ -31,7 +31,7 @@ functions/*
 .VSCodeCounter
 
 # umi
-src/.umi/.cache
+src/.umi/**
 .umi-production
 
 # screenshot
