@@ -12,29 +12,51 @@ const StrategyGraphBehavior = () => {
   const { graph, apis } = useContext(GraphinContext);
 
   useEffect(() => {
-    graph.on('node:click', (evt) => {
+    graph.on('click', (evt) => {
       // setShowNodeTooltip(false);
       setShowNodeContextMenu(false);
     });
 
-    // 节点上面触发mouseleave事件后隐藏tooltip和ContextMenu
-    graph.on('node:mouseleave', (evt) => {
-      evt.preventDefault();
-      // setShowNodeTooltip(false);
-      setShowNodeContextMenu(false);
-    });
+    // graph.on('node:click', (evt) => {
+    //   // setShowNodeTooltip(false);
+    //   setShowNodeContextMenu(false);
+    // });
 
-    graph.on('node:contextmenu', (evt) => {
-      evt.preventDefault();
+    graph.on('node:dblclick', (evt) => {
+      // setShowNodeTooltip(false);
+      // setShowNodeContextMenu(false);
+      // evt.preventDefault();
       const node = evt.item;
       const model = node.getModel();
       const { x, y } = model;
-      // message.info(model.id);
       const point = graph.getCanvasByPoint(x, y);
       setNodeContextMenuX(point.x);
       setNodeContextMenuY(point.y);
       setShowNodeContextMenu(true);
     });
+
+    // graph.on('node:drag', (evt) => {
+    //   // setShowNodeTooltip(false);
+    //   setShowNodeContextMenu(false);
+    // });
+
+    // 节点上面触发mouseleave事件后隐藏tooltip和ContextMenu
+    graph.on('node:mouseleave', (evt) => {
+      // evt.preventDefault();
+      // setShowNodeTooltip(false);
+      // setShowNodeContextMenu(false);
+    });
+
+    // graph.on('node:contextmenu', (evt) => {
+    //   evt.preventDefault();
+    //   const node = evt.item;
+    //   const model = node.getModel();
+    //   const { x, y } = model;
+    //   const point = graph.getCanvasByPoint(x, y);
+    //   setNodeContextMenuX(point.x);
+    //   setNodeContextMenuY(point.y);
+    //   setShowNodeContextMenu(true);
+    // });
   }, []);
   return (
     <div>

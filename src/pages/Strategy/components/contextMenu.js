@@ -1,16 +1,26 @@
 import React from 'react';
 import { Menu, Icon } from 'antd';
-import 'antd/es/menu/style/css';
+// import 'antd/es/menu/style/css';
+import { HomeOutlined } from '@ant-design/icons';
 const { SubMenu } = Menu;
+
+const onClick = (e) => {
+  console.log('click ', e);
+  // setCurrent(e.key);
+};
 
 const NodeContextMenu = ({ x = -300, y = 0 }) => {
   return (
-    <Menu style={{ width: 256, position: 'absolute', left: x, top: y }} mode="vertical">
+    <Menu
+      style={{ width: 256, position: 'absolute', left: x, top: y }}
+      mode="vertical"
+      onClick={onClick}
+    >
       <SubMenu
         key="sub1"
         title={
           <span>
-            <Icon type="mail" />
+            <HomeOutlined />
             <span>Navigation One</span>
           </span>
         }

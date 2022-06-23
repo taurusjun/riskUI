@@ -7,7 +7,7 @@ import { useContext, useEffect } from 'react';
 import { convertEdges2Graph } from '../components/GraphUtils';
 import { colorSets } from '../components/GraphUtils';
 import '../components/graphinRegisterShape';
-// import '../components/graphinEvents';
+import '../components/graphinEvents';
 import { StrategyGraphBehavior } from '../components';
 
 const StrategyGraph = () => {
@@ -208,6 +208,7 @@ const StrategyGraph = () => {
                   layout={{ type: 'dagre', rankdir: 'LR' }}
                   // layout={{ type: 'compactBox' }}
                   // layout={{ type: 'concentric' }}
+                  // modes={{ default: ['sampleBehavior', 'drag-node', 'click-select'] }}
                 >
                   <StrategyGraphBehavior />
                 </Graphin>

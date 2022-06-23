@@ -6,10 +6,10 @@ Graphin.registerBehavior('sampleBehavior', {
   getEvents() {
     return {
       // 'node:click': 'onClick',
-      'node:contextmenu': 'onClick',
+      'node:contextmenu': 'onContextmenu',
     };
   },
-  onClick(evt: IG6GraphEvent) {
+  onContextmenu(evt: IG6GraphEvent) {
     evt.preventDefault();
     const node = evt.item as INode;
     const model = node.getModel() as NodeConfig;
