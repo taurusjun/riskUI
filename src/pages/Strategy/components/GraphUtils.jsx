@@ -1,4 +1,3 @@
-import { now } from 'lodash';
 import { Util } from '@antv/g6';
 
 const subjectColors = [
@@ -56,6 +55,7 @@ export const convertEdges2Graph = (strategyNodesEdges) => {
         style: {
           label: {
             value: item.logic,
+            fill: color,
           },
           keyshape: {
             lineDash: [4, 4],

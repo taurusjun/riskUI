@@ -1,32 +1,47 @@
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import Graphin, { IG6GraphEvent, Utils, GraphinData, GraphinContext } from '@antv/graphin';
-import { Row, Col, Spin, message } from 'antd';
-import { strategyNodeGraph } from '../service';
+import Graphin from '@antv/graphin';
+import { Col, Row, Spin } from 'antd';
+import React, { useState } from 'react';
 import { useRequest } from 'umi';
-import { useContext, useEffect } from 'react';
-import { convertEdges2Graph } from '../components/GraphUtils';
-import { colorSets } from '../components/GraphUtils';
-import '../components/graphinRegisterShape';
-import '../components/graphinEvents';
 import { StrategyGraphBehavior } from '../components';
+import '../components/graphinEvents';
+import '../components/graphinRegisterShape';
+import { convertEdges2Graph } from '../components/GraphUtils';
+import { strategyNodeGraph } from '../service';
 
 const StrategyGraph = () => {
+  const graphinRef = React.createRef();
+
+  // React.useEffect(() => {
+  //   const {
+  //     graph, // g6 的Graph实例
+  //     apis, // Graphin 提供的API接口
+  //   } = graphinRef.current;
+  //   console.log('ref', graphinRef, graph, apis);
+  // }, []);
+
+  const [graphData, setGraphData] = useState(null);
+
   const { error, loading, run, data: data } = useRequest(() => strategyNodeGraph());
 
-  //Strategy node edges
-  const strategyNodesEdges = loading ? {} : data.strategyNodeGraph.connectVOMap;
-  //Strategy node detail Map, key is strategy node code
-  const strategyNodeMap = loading ? {} : new Map(Object.entries(data.strategyNodeMap));
+  if (!loading && !graphData) {
+    //Strategy node edges
+    const strategyNodesEdges = loading ? {} : data.strategyNodeGraph.connectVOMap;
+    //Strategy node detail Map, key is strategy node code
+    const strategyNodeMap = loading ? {} : new Map(Object.entries(data.strategyNodeMap));
+    let gData = convertEdges2Graph(strategyNodesEdges);
+    setGraphData(gData);
+  }
 
-  let graphData = {};
-
-  if (!loading) {
-    graphData = convertEdges2Graph(strategyNodesEdges);
+  if (!loading && graphinRef.current) {
+    const {
+      graph, // g6 的Graph实例
+      apis, // Graphin 提供的API接口
+    } = graphinRef.current;
+    console.log('ref', graphinRef, graph, apis);
   }
 
   console.log(graphData);
-
-  /////////   test data -start ////////
+  ///////   test data -start ////////
   // const loading = false;
   // const nodes = [
   //   {
@@ -160,14 +175,14 @@ const StrategyGraph = () => {
   //   },
   // ];
 
-  // nodes.forEach((node) => {
-  //   node.type = 'myshape';
-  //   node.label = node.id;
-  //   node.style = {
-  //     stroke: '#72CC4A',
-  //     width: 150,
-  //   };
-  // });
+  // // nodes.forEach((node) => {
+  // //   node.type = 'myshape';
+  // //   node.label = node.id;
+  // //   node.style = {
+  // //     stroke: '#72CC4A',
+  // //     width: 150,
+  // //   };
+  // // });
 
   // nodes.map((node, index) => {
   //   node.style = {
@@ -183,13 +198,35 @@ const StrategyGraph = () => {
   //   };
   // });
 
-  // edges.map((edge, index) => {
-  //   var egdeStyle = edge.style;
-  // });
+  // // edges.map((edge, index) => {
+  // //   var egdeStyle = edge.style;
+  // // });
 
   // graphData = { nodes, edges };
   // console.log(graphData);
   /////////   test data -end ////////
+
+  const onNodeHandle = (actionEvent, node) => {
+    console.log('click ', actionEvent);
+    console.log('node ', node);
+    let actionKey = actionEvent.key;
+    console.log(actionKey);
+    if (actionKey == 'addNode') {
+      let newNodeTmp = {
+        id: 'test_node_001',
+        style: {
+          label: {
+            value: 'test_node_001',
+          },
+          type: 'graphin-circle',
+        },
+      };
+      let newGData = { ...graphData };
+      newGData.nodes.push(newNodeTmp);
+      setGraphData(newGData);
+      console.log(graphData);
+    }
+  };
 
   return (
     <Spin spinning={loading} size="large" delay={300}>
@@ -200,19 +237,28 @@ const StrategyGraph = () => {
               <Col span={2}>
                 <div>StrategyGraph</div>
               </Col>
-              <Col span={22}>
+            </Row>
+            <Row>
+              <div style={{ width: '100%' }}>
                 <Graphin
                   fitView={true}
+                  fitViewPadding={[10, 10]}
                   fitCenter={true}
                   data={graphData}
-                  layout={{ type: 'dagre', rankdir: 'LR' }}
+                  ref={graphinRef}
+                  layout={{
+                    type: 'dagre',
+                    rankdir: 'LR',
+                    begin: [200, -150],
+                    //align: 'UL',
+                  }}
                   // layout={{ type: 'compactBox' }}
                   // layout={{ type: 'concentric' }}
                   // modes={{ default: ['sampleBehavior', 'drag-node', 'click-select'] }}
                 >
-                  <StrategyGraphBehavior />
+                  <StrategyGraphBehavior callbackFun={onNodeHandle} />
                 </Graphin>
-              </Col>
+              </div>
             </Row>
           </div>
         </>

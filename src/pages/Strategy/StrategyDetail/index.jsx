@@ -1,9 +1,8 @@
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import Graphin, { Utils, GraphinTreeData } from '@antv/graphin';
-import { Card, Row, Col, Spin, Select, Divider } from 'antd';
-import { strategyNodeDetail } from '../service';
+import Graphin from '@antv/graphin';
+import { Card, Col, Row, Select, Spin } from 'antd';
 import { useParams, useRequest } from 'umi';
 import { convertEdges2Graph } from '../components/GraphUtils';
+import { strategyNodeDetail } from '../service';
 
 const StrategyGraph = () => {
   const params = useParams();
@@ -120,7 +119,12 @@ const StrategyGraph = () => {
                     fitView={true}
                     fitCenter={true}
                     data={graphData}
-                    layout={{ type: 'dagre', rankdir: 'LR' }}
+                    layout={{
+                      type: 'dagre',
+                      rankdir: 'LR',
+                      begin: [200, -100],
+                      //align: 'UL',
+                    }}
                     // layout={{ type: 'compactBox' }}
                     // layout={{ type: 'concentric' }}
                   />
