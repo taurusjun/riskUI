@@ -2,11 +2,11 @@ import G6 from '@antv/g6';
 import React, { useEffect, useState } from 'react';
 import { EdgeToolTips, NodeContextMenu, NodeTooltips } from '../components';
 import { data } from './data';
-import './registerShape';
+import RegisterShapes from './registerShape';
 
 const Test1 = () => {
   const ref = React.useRef(null);
-  let graph = null;
+  // let graph = null;
 
   // 边tooltip坐标
   const [showEdgeTooltip, setShowEdgeTooltip] = useState(false);
@@ -22,7 +22,7 @@ const Test1 = () => {
   const [showNodeContextMenu, setShowNodeContextMenu] = useState(false);
   const [nodeContextMenuX, setNodeContextMenuX] = useState(0);
   const [nodeContextMenuY, setNodeContextMenuY] = useState(0);
-  const bindEvents = () => {
+  const bindEvents = (graph) => {
     // 监听edge上面mouse事件
     graph.on('edge:mouseenter', (evt) => {
       const { item, target } = evt;
@@ -78,55 +78,56 @@ const Test1 = () => {
   };
 
   useEffect(() => {
-    if (!graph) {
-      const miniMap = new G6.Minimap();
-      graph = new G6.Graph({
-        container: ref.current,
-        width: 1200,
-        height: 800,
-        modes: {
-          default: ['drag-canvas', 'drag-node'],
-        },
-        defaultNode: {
-          shape: 'node',
-          // 节点文本样式
-          labelCfg: {
-            style: {
-              fill: '#000000A6',
-              fontSize: 10,
-            },
-          },
-          // 节点默认样式
+    RegisterShapes();
+    // if (!graph) {
+    const miniMap = new G6.Minimap();
+    const graph = new G6.Graph({
+      container: ref.current,
+      width: 1200,
+      height: 800,
+      modes: {
+        default: ['drag-canvas', 'drag-node'],
+      },
+      defaultNode: {
+        shape: 'round-rect',
+        // 节点文本样式
+        labelCfg: {
           style: {
-            stroke: '#72CC4A',
-            width: 150,
+            fill: '#000000A6',
+            fontSize: 10,
           },
         },
-        defaultEdge: {
-          shape: 'polyline',
+        // 节点默认样式
+        style: {
+          stroke: '#72CC4A',
+          width: 150,
         },
-        // 节点交互状态配置
-        nodeStateStyles: {
-          hover: {
-            stroke: 'red',
-            lineWidth: 3,
-          },
+      },
+      defaultEdge: {
+        shape: 'polyline',
+      },
+      // 节点交互状态配置
+      nodeStateStyles: {
+        hover: {
+          stroke: 'red',
+          lineWidth: 3,
         },
-        edgeStateStyles: {
-          hover: {
-            stroke: 'blue',
-            lineWidth: 3,
-          },
+      },
+      edgeStateStyles: {
+        hover: {
+          stroke: 'blue',
+          lineWidth: 3,
         },
-        layout: {
-          type: 'dagre',
-          rankdir: 'LR',
-          nodesep: 30,
-          ranksep: 100,
-        },
-        plugins: [miniMap],
-      });
-    }
+      },
+      layout: {
+        type: 'dagre',
+        rankdir: 'LR',
+        nodesep: 30,
+        ranksep: 100,
+      },
+      plugins: [miniMap],
+    });
+    // }
 
     graph.data(data);
 
@@ -143,7 +144,7 @@ const Test1 = () => {
     });
     graph.paint();
 
-    bindEvents();
+    bindEvents(graph);
   }, []);
 
   return (

@@ -47,6 +47,12 @@ const Test2 = () => {
       {
         source: 'node1',
         target: 'node2',
+        attrs: {
+          line: {
+            stroke: '#7c68fc', // 指定 path 元素的填充色
+          },
+        },
+        label: 'edge123',
       },
       {
         source: 'node1',
@@ -81,7 +87,7 @@ const Test2 = () => {
     type: 'dagre',
     rankdir: 'LR',
     align: 'UL',
-    ranksep: 30,
+    ranksep: 50,
     nodesep: 15,
     controlPoints: true,
   });
@@ -91,6 +97,7 @@ const Test2 = () => {
       container: ref.current,
       width: 800,
       height: 600,
+      selecting: true,
       mousewheel: {
         enabled: true,
         modifiers: ['ctrl', 'meta'],
