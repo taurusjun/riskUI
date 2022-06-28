@@ -1,236 +1,336 @@
 import G6 from '@antv/g6';
+import { isObject } from '@antv/util';
 const colorMap = {
-  name1: '#72CC4A',
-  name2: '#1A91FF',
-  name3: '#FFAA15',
+  A: '#72CC4A',
+  B: '#1A91FF',
+  C: '#FFAA15',
 };
 
-const RegisterShapes = () => {
-  G6.registerNode(
-    'round-rect',
-    {
-      drawShape: function drawShape(cfg, group) {
-        const width = cfg.style.width;
-        const stroke = cfg.style.stroke;
-        const rect = group.addShape('rect', {
-          attrs: {
-            x: -width / 2,
-            y: -15,
-            width,
-            height: 30,
-            radius: 15,
-            stroke,
-            lineWidth: 1.2,
-            fillOpacity: 1,
-          },
-          name: 'rect-shape',
-        });
-        group.addShape('circle', {
-          attrs: {
-            x: -width / 2,
-            y: 0,
-            r: 3,
-            fill: stroke,
-          },
-          name: 'circle-shape',
-        });
-        group.addShape('circle', {
-          attrs: {
-            x: width / 2,
-            y: 0,
-            r: 3,
-            fill: stroke,
-          },
-          name: 'circle-shape2',
-        });
-        return rect;
-      },
-      getAnchorPoints: function getAnchorPoints() {
-        return [
-          [0, 0.5],
-          [1, 0.5],
-        ];
-      },
-      update: function update(cfg, item) {
-        const group = item.getContainer();
-        const children = group.get('children');
-        const node = children[0];
-        const circleLeft = children[1];
-        const circleRight = children[2];
-
-        const stroke = cfg.style.stroke;
-
-        if (stroke) {
-          node.attr('stroke', stroke);
-          circleLeft.attr('fill', stroke);
-          circleRight.attr('fill', stroke);
-        }
-      },
+G6.registerNode(
+  'round-rect',
+  {
+    drawShape: function drawShape(cfg, group) {
+      const width = cfg.style.width;
+      const stroke = cfg.style.stroke;
+      const rect = group.addShape('rect', {
+        attrs: {
+          x: -width / 2,
+          y: -15,
+          width,
+          height: 30,
+          radius: 15,
+          stroke,
+          lineWidth: 1.2,
+          fillOpacity: 1,
+        },
+        name: 'rect-shape',
+      });
+      group.addShape('circle', {
+        attrs: {
+          x: -width / 2,
+          y: 0,
+          r: 3,
+          fill: stroke,
+        },
+        name: 'circle-shape',
+      });
+      group.addShape('circle', {
+        attrs: {
+          x: width / 2,
+          y: 0,
+          r: 3,
+          fill: stroke,
+        },
+        name: 'circle-shape2',
+      });
+      return rect;
     },
-    'single-node',
-  );
-
-  G6.registerNode(
-    'node',
-    {
-      drawShape: function drawShape(cfg, group) {
-        const width = cfg.style.width;
-        const stroke = cfg.style.stroke;
-        const rect = group.addShape('rect', {
-          attrs: {
-            x: -width / 2,
-            y: -15,
-            width,
-            height: 30,
-            radius: 15,
-            stroke,
-            lineWidth: 0.6,
-            fillOpacity: 1,
-            fill: '#fff',
-          },
-        });
-        const point1 = group.addShape('circle', {
-          attrs: {
-            x: -width / 2,
-            y: 0,
-            r: 3,
-            fill: stroke,
-          },
-        });
-        const point2 = group.addShape('circle', {
-          attrs: {
-            x: width / 2,
-            y: 0,
-            r: 3,
-            fill: stroke,
-          },
-        });
-        return rect;
-      },
-      getAnchorPoints: function getAnchorPoints() {
-        return [
-          [0, 0.5],
-          [1, 0.5],
-        ];
-      },
-      update: function (cfg, item) {
-        const group = item.getContainer();
-        const children = group.get('children');
-        const node = children[0];
-        const circleLeft = children[1];
-        const circleRight = children[2];
-
-        const {
-          style: { stroke },
-          labelStyle,
-        } = cfg;
-
-        if (stroke) {
-          node.attr('stroke', stroke);
-          circleLeft.attr('fill', stroke);
-          circleRight.attr('fill', stroke);
-        }
-      },
+    getAnchorPoints: function getAnchorPoints() {
+      return [
+        [0, 0.5],
+        [1, 0.5],
+      ];
     },
-    'single-shape',
-  );
+    update: function update(cfg, item) {
+      const group = item.getContainer();
+      const children = group.get('children');
+      const node = children[0];
+      const circleLeft = children[1];
+      const circleRight = children[2];
 
-  G6.registerEdge('polyline', {
-    itemType: 'edge',
-    draw: function draw(cfg, group) {
-      const startPoint = cfg.startPoint;
-      const endPoint = cfg.endPoint;
+      const stroke = cfg.style.stroke;
 
-      const Ydiff = endPoint.y - startPoint.y;
+      if (stroke) {
+        node.attr('stroke', stroke);
+        circleLeft.attr('fill', stroke);
+        circleRight.attr('fill', stroke);
+      }
+    },
+  },
+  'single-node',
+);
 
-      const slope = Ydiff !== 0 ? 500 / Math.abs(Ydiff) : 0;
+G6.registerEdge('fund-polyline', {
+  itemType: 'edge',
+  draw: function draw(cfg, group) {
+    const startPoint = cfg.startPoint;
+    const endPoint = cfg.endPoint;
 
-      const cpOffset = 16;
-      const offset = Ydiff < 0 ? cpOffset : -cpOffset;
+    const Ydiff = endPoint.y - startPoint.y;
 
-      const line1EndPoint = {
-        x: startPoint.x + slope,
-        y: endPoint.y + offset,
-      };
-      const line2StartPoint = {
-        x: line1EndPoint.x + cpOffset,
-        y: endPoint.y,
-      };
+    const slope = Ydiff !== 0 ? Math.min(500 / Math.abs(Ydiff), 20) : 0;
 
-      // 控制点坐标
-      const controlPoint = {
-        x:
-          ((line1EndPoint.x - startPoint.x) * (endPoint.y - startPoint.y)) /
-            (line1EndPoint.y - startPoint.y) +
-          startPoint.x,
-        y: endPoint.y,
-      };
+    const cpOffset = slope > 15 ? 0 : 16;
+    const offset = Ydiff < 0 ? cpOffset : -cpOffset;
 
-      let path = [
+    const line1EndPoint = {
+      x: startPoint.x + slope,
+      y: endPoint.y + offset,
+    };
+    const line2StartPoint = {
+      x: line1EndPoint.x + cpOffset,
+      y: endPoint.y,
+    };
+
+    // 控制点坐标
+    const controlPoint = {
+      x:
+        ((line1EndPoint.x - startPoint.x) * (endPoint.y - startPoint.y)) /
+          (line1EndPoint.y - startPoint.y) +
+        startPoint.x,
+      y: endPoint.y,
+    };
+
+    let path = [
+      ['M', startPoint.x, startPoint.y],
+      ['L', line1EndPoint.x, line1EndPoint.y],
+      ['Q', controlPoint.x, controlPoint.y, line2StartPoint.x, line2StartPoint.y],
+      ['L', endPoint.x, endPoint.y],
+    ];
+
+    if (Math.abs(Ydiff) <= 5) {
+      path = [
         ['M', startPoint.x, startPoint.y],
-        ['L', line1EndPoint.x, line1EndPoint.y],
-        ['Q', controlPoint.x, controlPoint.y, line2StartPoint.x, line2StartPoint.y],
         ['L', endPoint.x, endPoint.y],
       ];
+    }
 
-      if (Ydiff === 0) {
-        path = [
-          ['M', startPoint.x, startPoint.y],
-          ['L', endPoint.x, endPoint.y],
-        ];
-      }
+    const endArrow = cfg?.style && cfg.style.endArrow ? cfg.style.endArrow : false;
+    if (isObject(endArrow)) endArrow.fill = stroke;
+    const line = group.addShape('path', {
+      attrs: {
+        path,
+        stroke: colorMap[cfg.data && cfg.data.type],
+        lineWidth: 1.2,
+        endArrow,
+      },
+      name: 'path-shape',
+    });
 
-      const line = group.addShape('path', {
-        attrs: {
-          path,
-          stroke: colorMap[cfg.data.type],
-          lineWidth: 1.2,
-          endArrow: false,
-        },
-      });
+    const labelLeftOffset = 0;
+    const labelTopOffset = 8;
+    // amount
+    const amount = group.addShape('text', {
+      attrs: {
+        text: cfg.data && cfg.data.amount,
+        x: line2StartPoint.x + labelLeftOffset,
+        y: endPoint.y - labelTopOffset - 2,
+        fontSize: 14,
+        textAlign: 'left',
+        textBaseline: 'middle',
+        fill: '#000000D9',
+      },
+      name: 'text-shape-amount',
+    });
+    // type
+    group.addShape('text', {
+      attrs: {
+        text: cfg.data && cfg.data.type,
+        x: line2StartPoint.x + labelLeftOffset,
+        y: endPoint.y - labelTopOffset - amount.getBBox().height - 2,
+        fontSize: 10,
+        textAlign: 'left',
+        textBaseline: 'middle',
+        fill: '#000000D9',
+      },
+      name: 'text-shape-type',
+    });
+    // date
+    group.addShape('text', {
+      attrs: {
+        text: cfg.data && cfg.data.date,
+        x: line2StartPoint.x + labelLeftOffset,
+        y: endPoint.y + labelTopOffset + 4,
+        fontSize: 12,
+        fontWeight: 300,
+        textAlign: 'left',
+        textBaseline: 'middle',
+        fill: '#000000D9',
+      },
+      name: 'text-shape-date',
+    });
+    return line;
+  },
+});
 
-      const labelLeftOffset = 8;
-      const labelTopOffset = 8;
-      // amount
-      const amount = group.addShape('text', {
+G6.registerNode(
+  'node',
+  {
+    drawShape: function drawShape(cfg, group) {
+      const width = cfg.style.width;
+      const stroke = cfg.style.stroke;
+      const rect = group.addShape('rect', {
         attrs: {
-          text: cfg.data.amount,
-          x: line2StartPoint.x + labelLeftOffset,
-          y: endPoint.y - labelTopOffset - 2,
-          fontSize: 14,
-          textAlign: 'left',
-          textBaseline: 'middle',
-          fill: '#000000D9',
+          x: -width / 2,
+          y: -15,
+          width,
+          height: 30,
+          radius: 15,
+          stroke,
+          lineWidth: 0.6,
+          fillOpacity: 1,
+          fill: '#fff',
         },
       });
-      // type
-      const type = group.addShape('text', {
+      const point1 = group.addShape('circle', {
         attrs: {
-          text: cfg.data.type,
-          x: line2StartPoint.x + labelLeftOffset,
-          y: endPoint.y - labelTopOffset - amount.getBBox().height - 2,
-          fontSize: 10,
-          textAlign: 'left',
-          textBaseline: 'middle',
-          fill: '#000000D9',
+          x: -width / 2,
+          y: 0,
+          r: 3,
+          fill: stroke,
         },
       });
-      // date
-      const date = group.addShape('text', {
+      const point2 = group.addShape('circle', {
         attrs: {
-          text: cfg.data.date,
-          x: line2StartPoint.x + labelLeftOffset,
-          y: endPoint.y + labelTopOffset + 4,
-          fontSize: 12,
-          fontWeight: 300,
-          textAlign: 'left',
-          textBaseline: 'middle',
-          fill: '#000000D9',
+          x: width / 2,
+          y: 0,
+          r: 3,
+          fill: stroke,
         },
       });
-      return line;
+      return rect;
     },
-  });
-};
+    getAnchorPoints: function getAnchorPoints() {
+      return [
+        [0, 0.5],
+        [1, 0.5],
+      ];
+    },
+    update: function (cfg, item) {
+      const group = item.getContainer();
+      const children = group.get('children');
+      const node = children[0];
+      const circleLeft = children[1];
+      const circleRight = children[2];
 
-export default RegisterShapes;
+      const {
+        style: { stroke },
+        labelStyle,
+      } = cfg;
+
+      if (stroke) {
+        node.attr('stroke', stroke);
+        circleLeft.attr('fill', stroke);
+        circleRight.attr('fill', stroke);
+      }
+    },
+  },
+  'single-shape',
+);
+
+G6.registerEdge('polyline', {
+  itemType: 'edge',
+  draw: function draw(cfg, group) {
+    const startPoint = cfg.startPoint;
+    const endPoint = cfg.endPoint;
+
+    const Ydiff = endPoint.y - startPoint.y;
+
+    const slope = Ydiff !== 0 ? 500 / Math.abs(Ydiff) : 0;
+
+    const cpOffset = 16;
+    const offset = Ydiff < 0 ? cpOffset : -cpOffset;
+
+    const line1EndPoint = {
+      x: startPoint.x + slope,
+      y: endPoint.y + offset,
+    };
+    const line2StartPoint = {
+      x: line1EndPoint.x + cpOffset,
+      y: endPoint.y,
+    };
+
+    // 控制点坐标
+    const controlPoint = {
+      x:
+        ((line1EndPoint.x - startPoint.x) * (endPoint.y - startPoint.y)) /
+          (line1EndPoint.y - startPoint.y) +
+        startPoint.x,
+      y: endPoint.y,
+    };
+
+    let path = [
+      ['M', startPoint.x, startPoint.y],
+      ['L', line1EndPoint.x, line1EndPoint.y],
+      ['Q', controlPoint.x, controlPoint.y, line2StartPoint.x, line2StartPoint.y],
+      ['L', endPoint.x, endPoint.y],
+    ];
+
+    if (Ydiff === 0) {
+      path = [
+        ['M', startPoint.x, startPoint.y],
+        ['L', endPoint.x, endPoint.y],
+      ];
+    }
+
+    const line = group.addShape('path', {
+      attrs: {
+        path,
+        stroke: colorMap[cfg.data.type],
+        lineWidth: 1.2,
+        endArrow: false,
+      },
+    });
+
+    const labelLeftOffset = 8;
+    const labelTopOffset = 8;
+    // amount
+    const amount = group.addShape('text', {
+      attrs: {
+        text: cfg.data.amount,
+        x: line2StartPoint.x + labelLeftOffset,
+        y: endPoint.y - labelTopOffset - 2,
+        fontSize: 14,
+        textAlign: 'left',
+        textBaseline: 'middle',
+        fill: '#000000D9',
+      },
+    });
+    // type
+    const type = group.addShape('text', {
+      attrs: {
+        text: cfg.data.type,
+        x: line2StartPoint.x + labelLeftOffset,
+        y: endPoint.y - labelTopOffset - amount.getBBox().height - 2,
+        fontSize: 10,
+        textAlign: 'left',
+        textBaseline: 'middle',
+        fill: '#000000D9',
+      },
+    });
+    // date
+    const date = group.addShape('text', {
+      attrs: {
+        text: cfg.data.date,
+        x: line2StartPoint.x + labelLeftOffset,
+        y: endPoint.y + labelTopOffset + 4,
+        fontSize: 12,
+        fontWeight: 300,
+        textAlign: 'left',
+        textBaseline: 'middle',
+        fill: '#000000D9',
+      },
+    });
+    return line;
+  },
+});
