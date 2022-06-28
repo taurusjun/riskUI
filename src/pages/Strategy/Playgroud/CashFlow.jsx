@@ -135,6 +135,7 @@ const CashFlow = () => {
 
   const [data, setData] = useState(mdata);
   const [graph, setGraph] = useState(null);
+  const [count, setCount] = useState(0);
 
   const rePaint = () => {
     if (graph) {
@@ -152,6 +153,49 @@ const CashFlow = () => {
         });
       });
       graph.paint();
+    }
+  };
+
+  const bindEvents = () => {
+    if (graph) {
+      graph.off('node:dblclick');
+      graph.on('node:dblclick', (evt) => {
+        // setShowNodeTooltip(false);
+        // setShowNodeContextMenu(false);
+        evt.preventDefault();
+        const node = evt.item;
+        const model = node.getModel();
+        const { x, y } = model;
+        const point = graph.getCanvasByPoint(x, y);
+        console.log(evt);
+        // setNodeContextMenuX(point.x);
+        // setNodeContextMenuY(point.y);
+        // setShowNodeContextMenu(true);
+        // setCurrNode(node);
+
+        const cont = Math.floor(Math.random() * 1000);
+        const sid = node.getID();
+        const newNodeId = 'c' + cont;
+        console.log(newNodeId);
+        const newNode = {
+          id: newNodeId,
+          label: 'Company' + newNodeId,
+        };
+
+        const newEdge = {
+          source: sid,
+          target: newNodeId,
+          data: {
+            type: 'C',
+            amount: '900,000 Yuan',
+            date: '2019-08-03',
+          },
+        };
+        data.nodes.push(newNode);
+        data.edges.push(newEdge);
+        setData(data);
+        rePaint();
+      });
     }
   };
 
@@ -190,8 +234,8 @@ const CashFlow = () => {
   }, []);
 
   rePaint();
+  bindEvents();
 
-  const [count, setCount] = useState(0);
   const onClick = (e) => {
     setCount(count + 1);
     console.log(count);
