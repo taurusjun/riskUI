@@ -222,7 +222,7 @@ const CashFlow = () => {
         ranksep: 100,
       },
       modes: {
-        default: ['drag-canvas'],
+        default: ['drag-canvas', 'zoom-canvas'],
       },
       defaultNode: {
         type: 'round-rect',
@@ -286,8 +286,13 @@ const CashFlow = () => {
 
   return (
     <div>
-      <button onClick={undoFunc}>undo</button>
-      <button onClick={redoFunc}>redo</button>
+      <div>
+        <button onClick={undoFunc}>undo</button>
+      </div>
+      <br />
+      <div>
+        <button onClick={redoFunc}>redo</button>
+      </div>
       <div ref={ref} />
     </div>
   );
