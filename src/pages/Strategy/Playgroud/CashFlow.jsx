@@ -139,8 +139,6 @@ const CashFlow = () => {
 
   const rePaint = () => {
     if (graph) {
-      graph.data(data);
-      graph.render();
       const edges = graph.getEdges();
       edges.forEach(function (edge) {
         const line = edge.getKeyShape();
@@ -194,7 +192,15 @@ const CashFlow = () => {
         data.nodes.push(newNode);
         data.edges.push(newEdge);
         setData(data);
+        //change data
+        graph.changeData(data);
+        //re paint edges
         rePaint();
+        //focus
+        graph.focusItem(node, true, {
+          easing: 'easeCubic',
+          duration: 400,
+        });
       });
     }
   };
@@ -231,38 +237,15 @@ const CashFlow = () => {
       },
     });
     setGraph(mGraph);
+    mGraph.data(data);
+    mGraph.render();
   }, []);
 
   rePaint();
   bindEvents();
 
-  const onClick = (e) => {
-    setCount(count + 1);
-    console.log(count);
-    const newNodeId = 'c' + count;
-    const newNode = {
-      id: newNodeId,
-      label: 'Company' + newNodeId,
-    };
-
-    const newEdge = {
-      source: '2',
-      target: newNodeId,
-      data: {
-        type: 'C',
-        amount: '900,000 Yuan',
-        date: '2019-08-03',
-      },
-    };
-    data.nodes.push(newNode);
-    data.edges.push(newEdge);
-    setData(data);
-    rePaint();
-  };
-
   return (
     <div>
-      <button onClick={onClick}>AAAA</button>
       <div ref={ref} />
     </div>
   );
