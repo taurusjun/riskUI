@@ -57,6 +57,9 @@ const CashFlow = () => {
           amount: '100,000 Yuan',
           date: '2019-08-03',
         },
+        style: {
+          endArrow: true,
+        },
       },
       {
         source: '1',
@@ -137,6 +140,7 @@ const CashFlow = () => {
   const [graph, setGraph] = useState(null);
   const [count, setCount] = useState(0);
 
+  //To update node with edge color
   const rePaint = () => {
     if (graph) {
       const edges = graph.getEdges();
@@ -184,7 +188,7 @@ const CashFlow = () => {
           source: sid,
           target: newNodeId,
           data: {
-            type: 'C',
+            type: 'A',
             amount: '900,000 Yuan',
             date: '2019-08-03',
           },
@@ -193,7 +197,7 @@ const CashFlow = () => {
         data.edges.push(newEdge);
         setData(data);
         //change data
-        graph.changeData(data);
+        graph.changeData(data, true);
         //re paint edges
         rePaint();
         //focus
@@ -210,6 +214,7 @@ const CashFlow = () => {
       container: ref.current,
       width: 1200,
       height: 800,
+      enabledStack: true,
       layout: {
         type: 'dagre',
         rankdir: 'LR',
@@ -244,8 +249,45 @@ const CashFlow = () => {
   rePaint();
   bindEvents();
 
+  const undoFunc = () => {
+    const undoStack = graph.getUndoStack();
+    if (!undoStack || undoStack.length === 1) {
+      return;
+    }
+
+    const currentData = undoStack.pop();
+    if (currentData) {
+      const { action } = currentData;
+      graph.pushStack(action, { ...currentData.data }, 'redo');
+      let data = currentData.data.before;
+      if (action === 'changedata') {
+        graph.changeData(data, false);
+      }
+    }
+  };
+
+  const redoFunc = () => {
+    const redoStack = graph.getRedoStack();
+
+    if (!redoStack || redoStack.length === 0) {
+      return;
+    }
+
+    const currentData = redoStack.pop();
+    if (currentData) {
+      const { action } = currentData;
+      let data = currentData.data.after;
+      graph.pushStack(action, { ...currentData.data });
+      if (action === 'changedata') {
+        graph.changeData(data, false);
+      }
+    }
+  };
+
   return (
     <div>
+      <button onClick={undoFunc}>undo</button>
+      <button onClick={redoFunc}>redo</button>
       <div ref={ref} />
     </div>
   );
