@@ -8,7 +8,7 @@ import '../components/graphinRegisterShape';
 import { convertEdges2Graph } from '../components/GraphUtils';
 import { strategyNodeGraph } from '../service';
 
-const StrategyGraph = () => {
+const UseGraphinSample = () => {
   const graphinRef = React.createRef();
   const [graphData, setGraphData] = useState(null);
   const [graph, setGraph] = useState(null);
@@ -275,4 +275,4 @@ const StrategyGraph = () => {
   );
 };
 
-export default StrategyGraph;
+export default UseGraphinSample;

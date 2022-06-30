@@ -133,6 +133,24 @@ const CashFlow = () => {
           date: '2019-08-03',
         },
       },
+      {
+        source: '8',
+        target: '9',
+        data: {
+          type: 'A',
+          amount: '890,000 Yuan',
+          date: '2019-08-03',
+        },
+      },
+      {
+        source: '8',
+        target: '7',
+        data: {
+          type: 'C',
+          amount: '890,000 Yuan',
+          date: '2019-08-03',
+        },
+      },
     ],
   };
 

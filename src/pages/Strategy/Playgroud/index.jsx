@@ -4,8 +4,8 @@
 // import Test1 from './Test1';
 // export default Test1;
 
-// import CashFlow from './CashFlow';
-// export default CashFlow;
+import CashFlow from './CashFlow';
+export default CashFlow;
 
-import DecisionTree from './DecisionTree';
-export default DecisionTree;
+// import DecisionTree from './DecisionTree';
+// export default DecisionTree;
