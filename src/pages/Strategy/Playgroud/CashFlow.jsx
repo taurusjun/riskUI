@@ -10,38 +10,47 @@ const CashFlow = () => {
       {
         id: '1',
         label: 'Company1',
+        category: 'strategy-001',
       },
       {
         id: '2',
         label: 'Company2',
+        category: 'strategy-002',
       },
       {
         id: '3',
         label: 'Company3',
+        category: 'strategy-002',
       },
       {
         id: '4',
         label: 'Company4',
+        category: 'strategy-003',
       },
       {
         id: '5',
         label: 'Company5',
+        category: 'strategy-003',
       },
       {
         id: '6',
         label: 'Company6',
+        category: 'strategy-004',
       },
       {
         id: '7',
         label: 'Company7',
+        category: 'strategy-004',
       },
       {
         id: '8',
         label: 'Company8',
+        category: 'strategy-005',
       },
       {
         id: '9',
         label: 'Company9',
+        category: 'strategy-005',
       },
       // {
       //   id: '10',
@@ -130,24 +139,6 @@ const CashFlow = () => {
         data: {
           type: 'C',
           amount: '100,000 Yuan',
-          date: '2019-08-03',
-        },
-      },
-      {
-        source: '8',
-        target: '9',
-        data: {
-          type: 'A',
-          amount: '890,000 Yuan',
-          date: '2019-08-03',
-        },
-      },
-      {
-        source: '8',
-        target: '7',
-        data: {
-          type: 'C',
-          amount: '890,000 Yuan',
           date: '2019-08-03',
         },
       },

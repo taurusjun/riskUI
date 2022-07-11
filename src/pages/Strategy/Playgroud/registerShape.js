@@ -12,19 +12,36 @@ G6.registerNode(
     drawShape: function drawShape(cfg, group) {
       const width = cfg.style.width;
       const stroke = cfg.style.stroke;
+      const rectConfig = {
+        width,
+        height: 60,
+        radius: 15,
+        stroke,
+        lineWidth: 1.2,
+        fillOpacity: 1,
+      };
+
+      //node center
+      const nodeOrigin = {
+        x: -rectConfig.width / 2,
+        y: -rectConfig.height / 2,
+      };
+
+      const textConfig = {
+        textAlign: 'left',
+        textBaseline: 'bottom',
+        textDecoration: 'underline',
+      };
+
       const rect = group.addShape('rect', {
         attrs: {
-          x: -width / 2,
-          y: -15,
-          width,
-          height: 30,
-          radius: 15,
-          stroke,
-          lineWidth: 1.2,
-          fillOpacity: 1,
+          x: nodeOrigin.x,
+          y: nodeOrigin.y,
+          ...rectConfig,
         },
         name: 'rect-shape',
       });
+
       group.addShape('circle', {
         attrs: {
           x: -width / 2,
@@ -34,6 +51,7 @@ G6.registerNode(
         },
         name: 'circle-shape',
       });
+
       group.addShape('circle', {
         attrs: {
           x: width / 2,
@@ -43,6 +61,36 @@ G6.registerNode(
         },
         name: 'circle-shape2',
       });
+
+      const rectBBox = rect.getBBox();
+      // label title
+      const title = group.addShape('text', {
+        attrs: {
+          ...textConfig,
+          x: 12 + nodeOrigin.x,
+          y: 15 + nodeOrigin.y,
+          text: cfg.category,
+          fontSize: 10,
+          // fontWeight: 'bold',
+          opacity: 0.85,
+          fill: '#000',
+          cursor: 'pointer',
+        },
+        name: 'name-shape',
+      });
+      const triangle = group.addShape('marker', {
+        attrs: {
+          ...textConfig,
+          x: title.getBBox().minX - 5,
+          y: title.getBBox().minY + 5,
+          // x: 6 + nodeOrigin.x,
+          // y: 10 + nodeOrigin.y,
+          symbol: 'diamond',
+          r: 3,
+          fill: 'blue',
+        },
+      });
+
       return rect;
     },
     getAnchorPoints: function getAnchorPoints() {
