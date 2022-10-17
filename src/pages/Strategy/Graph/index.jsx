@@ -257,7 +257,7 @@ const StrategyGraph = () => {
                   layout={{
                     type: 'dagre',
                     rankdir: 'LR',
-                    begin: [200, -150],
+                    // begin: [200, -150],
                     //align: 'UL',
                   }}
                   // layout={{ type: 'compactBox' }}

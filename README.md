@@ -24,6 +24,8 @@ Scripts provided in `package.json`. It's safe to modify or add additional script
 
 ### Start project
 
+需要使用 node 版本为 16，17 或者以上版本需要使用 openSSL 兼容选项 NODE_OPTIONS=--openssl-legacy-provider && npm run start
+
 ```bash
 npm start
 ```
