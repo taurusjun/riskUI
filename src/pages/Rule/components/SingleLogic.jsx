@@ -31,7 +31,7 @@ const SingleLogic = ({ logicOps, logic, onChange }) => {
     <>
       <Select
         className={styles.customSelect}
-        style={{ width: 100 }}
+        style={{ width: 80 }}
         placeholder="Select"
         options={logicOptions}
         defaultValue={defaultLogic}

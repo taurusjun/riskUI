@@ -98,14 +98,14 @@ const RuleGroup = ({
     let showMinus = false;
     if (i != 0) {
       ruleGroupHtml.push(
-        <Row gutter={16} style={{ margin: 10 }}>
+        <Row gutter={8} style={{ margin: 10 }}>
           <Col>
             <div
               id={'co' + condBaseKey + '_' + i}
               style={{
                 padding: 0,
-                marginTop: posArray[i] && posArray[i].marginTop,
-                marginLeft: posArray[i] && posArray[i].marginLeft,
+                marginTop: posArray[i] && posArray[i].marginTop + 2,
+                marginLeft: posArray[i] && posArray[i].marginLeft - 2,
                 height: 2,
                 backgroundColor: 'blue',
                 lineHeight: 1,
@@ -119,7 +119,7 @@ const RuleGroup = ({
       showMinus = true;
     }
     ruleGroupHtml.push(
-      <Row gutter={16} style={{ margin: 10 }} align="middle">
+      <Row gutter={8} style={{ margin: 10 }}>
         <Col>
           {i == 0 && (
             <>
@@ -131,7 +131,7 @@ const RuleGroup = ({
                   height: 2,
                   backgroundColor: 'blue',
                   lineHeight: 1,
-                  width: 200,
+                  width: 150,
                   display: 'inline-block',
                 }}
               />
@@ -147,8 +147,8 @@ const RuleGroup = ({
                   height: 2,
                   backgroundColor: 'blue',
                   lineHeight: 1,
-                  width: 30,
-                  marginLeft: 70,
+                  width: 20,
+                  marginLeft: 0,
                   display: 'inline-block',
                   // transform:'rotate(90deg)'
                 }}
@@ -161,19 +161,19 @@ const RuleGroup = ({
                   onChange={(e) => onGrpLogicChange(i, e)}
                 />
               </div>
+              <div
+                style={{
+                  padding: 0,
+                  margin: 0,
+                  height: 2,
+                  backgroundColor: 'blue',
+                  lineHeight: 1,
+                  width: 50,
+                  display: 'inline-block',
+                }}
+              />
             </>
           )}
-          <div
-            style={{
-              padding: 0,
-              margin: 0,
-              height: 2,
-              backgroundColor: 'blue',
-              lineHeight: 1,
-              width: 50,
-              display: 'inline-block',
-            }}
-          />
           <div style={{ borderStyle: 'dotted', padding: 5, display: 'inline-block' }}>
             <SingleRule
               key={condtion._key}

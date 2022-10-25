@@ -85,7 +85,7 @@ const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, 
         <Select
           showSearch
           className={styles.customSelect}
-          style={{ width: 100 }}
+          style={{ width: 70 }}
           placeholder="Operator"
           optionFilterProp="children"
           filterOption={(input, option) =>
@@ -99,7 +99,7 @@ const SingleRule = ({ variables, operators, ruleCondition, showMinus, onChange, 
           onChange={onOperatorChange}
         />
       </div>
-      <div style={{ display: 'inline-block' }}>
+      <div style={{ display: 'inline-block', width: 70 }}>
         <Input placeholder="value" value={ruleCond.rightValue} onChange={onRightValueChange} />
       </div>
       <div style={{ display: 'inline-block', marginLeft: 10 }}>

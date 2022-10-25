@@ -103,7 +103,7 @@ const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, on
       showHeadMinus = true;
     }
     ruleHtml.push(
-      <Row align="middle">
+      <Row>
         <Col span={24}>
           {i == 0 && (
             <>
@@ -127,7 +127,7 @@ const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, on
                   height: 2,
                   backgroundColor: 'blue',
                   lineHeight: 1,
-                  width: 100,
+                  width: 80,
                   verticalAlign: 'top',
                   display: 'inline-block',
                 }}
@@ -173,7 +173,7 @@ const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, on
               height: 2,
               backgroundColor: 'blue',
               lineHeight: 1,
-              width: 50,
+              width: 20,
               display: 'inline-block',
               verticalAlign: 'top',
             }}
@@ -214,9 +214,9 @@ const ComplexRuleLogic = ({ variables, operators, logicOps, rule: ruleGroups, on
           className={styles.card}
           bordered={false}
         >
-          <Row align="middle">
-            <div className={styles.border_less_wrapper}>{ruleHtml}</div>
-          </Row>
+          {/* <Row align="middle"> */}
+          <div className={styles.border_less_wrapper}>{ruleHtml}</div>
+          {/* </Row> */}
         </Card>
       </div>
     </>
